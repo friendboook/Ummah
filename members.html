@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সদস্যবৃন্দ - UMMMAH UNITED</title>
+    <style>
+        body { margin: 0; padding: 15px; font-family: sans-serif; background: #05161a; color: white; }
+        .header { text-align: center; color: #d4af37; border-bottom: 1px dashed #d4af37; padding-bottom: 10px; margin-bottom: 15px; }
+        .member-card { background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; border: 1px solid rgba(212,175,55,0.3); cursor: pointer; transition: 0.3s; }
+        .member-card:hover { background: rgba(212,175,55,0.2); }
+        .member-pic { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #d4af37; }
+        .member-name { font-weight: bold; font-size: 16px; color: #ffeb3b; }
+        
+        /* প্রোফাইল পপ-আপ (Modal) */
+        #profile-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: #0a3629; padding: 25px; border-radius: 15px; width: 85%; max-width: 350px; border: 2px solid #d4af37; text-align: center; position: relative; }
+        .close-btn { position: absolute; top: 10px; right: 15px; color: #d4af37; font-size: 24px; cursor: pointer; font-weight: bold; }
+        .modal-pic { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #d4af37; margin-bottom: 10px; }
+        .modal-info { text-align: left; margin-top: 15px; font-size: 14px; line-height: 1.8; color: #ddd; }
+        .modal-info span { color: #d4af37; font-weight: bold; }
+        .back-btn { background: #a81c1c; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; display: inline-block; margin-bottom: 15px; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <a href="home.html" class="back-btn">⬅ ফিরে যান</a>
+    <div class="header"><h2>👥 সকল সদস্যবৃন্দ</h2></div>
+    
+    <div id="members-list"><p style="text-align:center; font-size:12px;">লোড হচ্ছে...</p></div>
+
+    <!-- প্রোফাইল দেখার পপ-আপ -->
+    <div id="profile-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">×</span>
+            <img id="m-pic" src="" class="modal-pic">
+            <h3 id="m-name" style="margin: 0; color: #ffeb3b;"></h3>
+            <div class="modal-info">
+                <p><span>📞 ফোন:</span> <span id="m-phone" style="color:white; font-weight:normal;"></span></p>
+                <p><span>👨‍👦 বাবার নাম:</span> <span id="m-father" style="color:white; font-weight:normal;"></span></p>
+                <p><span>🎂 জন্মতারিখ:</span> <span id="m-dob" style="color:white; font-weight:normal;"></span></p>
+                <p><span>✉️ ইমেইল:</span> <span id="m-email" style="color:white; font-weight:normal;"></span></p>
+                <p><span>🏠 ঠিকানা:</span> <span id="m-address" style="color:white; font-weight:normal;"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyBOZk0sV04IXr3uLD9BlNUnndJ6LIfvHag", authDomain: "ummah-41fcf.firebaseapp.com", projectId: "ummah-41fcf" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let allUsers = [];
+
+        async function loadMembers() {
+            const querySnapshot = await getDocs(collection(db, "users"));
+            let html = '';
+            querySnapshot.forEach((doc) => {
+                const user = doc.data();
+                user.id = doc.id;
+                allUsers.push(user);
+                
+                const pic = user.profilePic || 'https://via.placeholder.com/50?text=User';
+                html += `
+                    <div class="member-card" onclick="showProfile('${user.phone}')">
+                        <img src="${pic}" class="member-pic">
+                        <div class="member-name">${user.fullName || 'নাম দেওয়া নেই'}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('members-list').innerHTML = html;
+        }
+        loadMembers();
+
+        window.showProfile = function(phone) {
+            const user = allUsers.find(u => u.phone === phone);
+            if(user) {
+                document.getElementById('m-pic').src = user.profilePic || 'https://via.placeholder.com/100?text=User';
+                document.getElementById('m-name').innerText = user.fullName || 'নাম দেওয়া নেই';
+                document.getElementById('m-phone').innerText = user.phone || 'N/A';
+                document.getElementById('m-father').innerText = user.fatherName || 'N/A';
+                document.getElementById('m-dob').innerText = user.dob || 'N/A';
+                document.getElementById('m-email').innerText = user.email || 'N/A';
+                document.getElementById('m-address').innerText = user.address || 'N/A';
+                document.getElementById('profile-modal').style.display = 'flex';
+            }
+        }
+        window.closeModal = () => document.getElementById('profile-modal').style.display = 'none';
+    </script>
+</body>
+</html>

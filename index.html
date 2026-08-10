@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>প্রবেশ করুন - UMMMAH UNITED</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        
+        body, html { 
+            margin: 0; padding: 0; 
+            min-height: 100vh; 
+            font-family: 'Noto Serif Bengali', serif; 
+            background: url('https://iili.io/C4w6VXR.jpg') no-repeat top center/cover; 
+            background-attachment: fixed;
+            display: flex; flex-direction: column; align-items: center; 
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .main-container {
+            width: 100%; max-width: 420px;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px 15px;
+            margin-top: 30vh; 
+        }
+
+        /* গ্লাস প্যানেল (লগইন/সাইনআপ বক্স) */
+        .glass-panel {
+            background: rgba(12, 45, 40, 0.5); 
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-radius: 25px;
+            padding: 30px 20px;
+            width: 100%; 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); 
+            text-align: center; position: relative; 
+            z-index: 10;
+        }
+
+        /* RGB রানিং নিয়ন বর্ডার (শার্প বা স্পষ্ট লাইন) */
+        .glass-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0; /* প্যানেলের চারপাশে বসবে */
+            border-radius: 25px;
+            padding: 2.5px; /* বর্ডারের পুরুত্ব */
+            background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 200% 100%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rgbRunning 5s linear infinite; /* স্লো মোশন এনিমেশন */
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* RGB নিয়ন গ্লো (হালকা ছড়ানো আলো) */
+        .glass-panel::after {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 25px;
+            padding: 4px;
+            background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 200% 100%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rgbRunning 5s linear infinite;
+            pointer-events: none;
+            filter: blur(10px); /* আলোকে ছড়ানোর জন্য ব্লার */
+            opacity: 0.8;
+            z-index: -1;
+        }
+
+        /* আরজিবি (RGB) লাইট চলার এনিমেশন */
+        @keyframes rgbRunning {
+            0% { background-position: 200% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        /* ইনপুট ফিল্ড ডিজাইন */
+        .input-group { position: relative; margin-bottom: 20px; width: 100%; z-index: 5; }
+        .input-group input {
+            width: 100%; padding: 16px 45px 16px 55px; 
+            background: rgba(8, 28, 24, 0.7); 
+            border: 1px solid #d4af37; 
+            border-radius: 30px; color: #fff;
+            outline: none; font-size: 14px; font-family: inherit;
+            transition: 0.3s;
+        }
+        .input-group input::placeholder { color: rgba(255, 255, 255, 0.6); }
+        .input-group input:focus { border-color: #ffeb3b; box-shadow: 0 0 10px rgba(212,175,55,0.3); background: rgba(10, 35, 30, 0.8); }
+        
+        .icon-left {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            width: 32px; height: 32px; background: rgba(0,0,0,0.3);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+        }
+        .icon-left svg { fill: #d4af37; width: 16px; height: 16px; }
+        
+        .icon-right { 
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%); 
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
+        }
+        .icon-right svg { fill: #d4af37; width: 18px; height: 18px; }
+
+        /* সাবমিট বাটন */
+        .submit-btn {
+            width: 100%; padding: 15px; margin-top: 5px; margin-bottom: 15px;
+            background: linear-gradient(90deg, #072a22, #104c3e);
+            border: 1px solid #7bc5b3; border-radius: 30px;
+            color: #fff; font-weight: bold; font-size: 16px; cursor: pointer; 
+            transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 5; position: relative;
+        }
+        .submit-btn:hover { background: linear-gradient(90deg, #0a3629, #156653); }
+        .submit-btn svg { fill: #d4af37; width: 20px; height: 20px; } 
+
+        .divider-star { color: #d4af37; font-size: 16px; margin: 15px 0; }
+
+        /* টগল টেক্সট */
+        .toggle-text { font-size: 14px; color: #fff; margin: 0; display: flex; justify-content: center; align-items: center; gap: 6px; position: relative; z-index: 5; }
+        .toggle-text span { color: #d4af37; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        .toggle-text span svg { fill: #d4af37; width: 16px; height: 16px; }
+
+        #signup-form { display: none; }
+
+        /* কাস্টম এলার্ট */
+        #custom-alert { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(10, 30, 20, 0.95); border: 1px solid #d4af37; color: white; padding: 12px 20px; border-radius: 8px; z-index: 99999; display: flex; align-items: center; gap: 10px; transition: top 0.4s ease-in-out; box-shadow: 0 5px 15px rgba(0,0,0,0.5); width: 85%; max-width: 320px; }
+        #custom-alert.show { top: 20px; }
+    </style>
+</head>
+<body>
+    
+    <div id="custom-alert"><span>✨</span><span id="alert-msg" style="font-size:13px; font-weight:bold;"></span></div>
+    
+    <div class="main-container">
+        
+        <!-- গ্লাস প্যানেল (এর বর্ডারে এখন RGB লাইট জ্বলবে) -->
+        <div class="glass-panel">
+            
+            <!-- লগইন ফর্ম -->
+            <div id="login-form">
+                <div class="input-group">
+                    <div class="icon-left"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+                    <input type="tel" id="login-phone" placeholder="ফোন নাম্বার দিন" required>
+                    <div class="icon-right"><svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg></div>
+                </div>
+                <div class="input-group">
+                    <div class="icon-left"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>
+                    <input type="password" id="login-password" placeholder="পাসওয়ার্ড দিন" required>
+                    <div class="icon-right"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></div>
+                </div>
+
+                <button class="submit-btn" onclick="handleLogin()">
+                    <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1-.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                    প্রবেশ করুন
+                </button>
+
+                <div class="divider-star">✧</div>
+                <p class="toggle-text">অ্যাকাউন্ট নেই? <span onclick="toggleForm('signup')">নতুন অ্যাকাউন্ট খুলুন <svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span></p>
+            </div>
+
+            <!-- সাইন আপ ফর্ম -->
+            <div id="signup-form">
+                <div class="input-group">
+                    <div class="icon-left"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+                    <input type="text" id="reg-name" placeholder="আপনার পুরো নাম" required>
+                </div>
+                <div class="input-group">
+                    <div class="icon-left"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+                    <input type="tel" id="reg-phone" placeholder="ফোন নাম্বার দিন" required>
+                </div>
+                <div class="input-group">
+                    <div class="icon-left"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>
+                    <input type="password" id="reg-password" placeholder="শক্তিশালী পাসওয়ার্ড" required>
+                </div>
+
+                <button class="submit-btn" onclick="handleSignup()">
+                    <svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    যুক্ত হোন
+                </button>
+
+                <div class="divider-star">✧</div>
+                <p class="toggle-text">অ্যাকাউন্ট আছে? <span onclick="toggleForm('login')">প্রবেশ করুন <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1-.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></span></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyBOZk0sV04IXr3uLD9BlNUnndJ6LIfvHag", authDomain: "ummah-41fcf.firebaseapp.com", projectId: "ummah-41fcf" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.showAlert = function(msg) {
+            document.getElementById('alert-msg').innerText = msg;
+            const alertBox = document.getElementById('custom-alert');
+            alertBox.classList.add('show');
+            setTimeout(() => { alertBox.classList.remove('show'); }, 3000);
+        }
+
+        window.toggleForm = (formType) => {
+            document.getElementById('login-form').style.display = formType === 'signup' ? 'none' : 'block';
+            document.getElementById('signup-form').style.display = formType === 'signup' ? 'block' : 'none';
+        }
+
+        window.handleLogin = async function() {
+            const phone = document.getElementById('login-phone').value;
+            const pass = document.getElementById('login-password').value;
+            if(!phone || !pass) return showAlert("ফোন নাম্বার এবং পাসওয়ার্ড দিন!");
+            
+            try {
+                const userSnap = await getDoc(doc(db, "users", phone));
+                if (userSnap.exists() && userSnap.data().password === pass) {
+                    localStorage.setItem("loggedInUser", phone);
+                    showAlert("আলহামদুলিল্লাহ! লগইন সফল হয়েছে।");
+                    setTimeout(() => { window.location.href = "home.html"; }, 1500);
+                } else {
+                    showAlert("ফোন নাম্বার বা পাসওয়ার্ড ভুল হয়েছে!");
+                }
+            } catch (error) { showAlert("ইন্টারনেট কানেকশন চেক করুন।"); }
+        }
+
+        window.handleSignup = async function() {
+            const name = document.getElementById('reg-name').value;
+            const phone = document.getElementById('reg-phone').value;
+            const pass = document.getElementById('reg-password').value;
+            
+            if(!name || !phone || !pass) return showAlert("সবগুলো তথ্য সঠিকভাবে দিন!");
+            
+            try {
+                const userSnap = await getDoc(doc(db, "users", phone));
+                if(userSnap.exists()) {
+                    showAlert("এই নাম্বারে ইতোমধ্যে অ্যাকাউন্ট আছে!");
+                } else {
+                    await setDoc(doc(db, "users", phone), { fullName: name, phone: phone, password: pass, profilePic: "" });
+                    showAlert("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! লগইন করুন।");
+                    window.toggleForm('login'); 
+                }
+            } catch (error) { showAlert("ইন্টারনেট কানেকশন চেক করুন।"); }
+        }
+    </script>
+</body>
+</html>

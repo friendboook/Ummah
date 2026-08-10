@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMMMAH UNITED ORGANISATION</title>
+    <style>
+        body { margin: 0; font-family: sans-serif; background: #05161a; min-height: 100vh; color: white; overflow-x: hidden; padding-bottom: 20px;}
+        .top-bar { background-color: #050505; color: #fff; padding: 6px 5px; font-size: 10.5px; border: 1px solid #d4af37; border-radius: 4px; margin: 4px; white-space: nowrap; overflow-x: auto; }
+        .top-bar::-webkit-scrollbar { display: none; }
+        .date-time-scroll { display: flex; align-items: center; justify-content: center; gap: 3px; }
+        .bangla-date, .time-text { color: #ffeb3b; font-weight: bold; }
+        .english-date { color: #8bc34a; font-weight: bold; }
+        .arabic-date { color: #00bcd4; font-weight: bold; }
+        .divider { color: #ffffff; margin: 0 1px; }
+
+        /* নিউজ ট্রিকার - স্পিড স্লো করা হয়েছে (25s) */
+        .ticker-container { display: flex; background: rgba(0,0,0,0.8); border: 1px solid #d4af37; border-radius: 4px; margin: 4px; overflow: hidden; align-items: center; position: relative; }
+        .ticker-label { background: #d4af37; color: #000; font-weight: bold; padding: 4px 10px; font-size: 11px; z-index: 10; position: relative; box-shadow: 2px 0 5px rgba(0,0,0,0.5); }
+        .ticker-wrap { flex: 1; overflow: hidden; position: relative; white-space: nowrap; }
+        .ticker-text { display: inline-block; padding-left: 100%; animation: ticker 25s linear infinite; font-size: 13px; color: #ffeb3b; font-weight: bold; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        .slider-container { margin: 4px; border-radius: 6px; overflow: hidden; border: 2px solid #d4af37; position: relative; height: 180px; }
+        .slider-container img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1s ease-in-out; }
+        .slider-container img.active { opacity: 1; }
+
+        .button-group { display: flex; margin: 4px; gap: 4px; }
+        .btn { flex: 1; padding: 7px 4px; color: white; text-align: center; border: 1px solid #d4af37; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 3px; }
+        .btn-blue { background-color: #153e7e; }
+        .btn-red { background-color: #a81c1c; }
+        .btn-green { background-color: #1e7a1e; }
+        .btn-purple { background-color: #6a1b9a; flex: 0.3; } 
+
+        #sidebar { position: fixed; top: 0; right: -250px; width: 220px; height: 100%; background: rgba(5, 22, 26, 0.95); backdrop-filter: blur(10px); border-left: 2px solid #d4af37; box-shadow: -5px 0 15px rgba(0,0,0,0.5); transition: right 0.3s ease; z-index: 1000; padding-top: 50px; }
+        #sidebar.open { right: 0; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #d4af37; }
+        .menu-item { display: block; padding: 15px 20px; color: white; text-decoration: none; border-bottom: 1px solid rgba(212, 175, 55, 0.3); font-size: 16px; transition: 0.3s; }
+        
+        .news-feed-container { margin: 10px 4px; }
+        .fb-post { background: linear-gradient(135deg, #05161a, #0b4533); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        .post-title { font-size: 18px; color: #d4af37; font-weight: bold; margin-bottom: 8px; border-bottom: 1px dashed rgba(212,175,55,0.4); padding-bottom: 5px; }
+        .post-body { font-size: 14.5px; line-height: 1.6; color: #e0e0e0; white-space: pre-wrap; margin-bottom: 12px; }
+        .post-image { width: 100%; border-radius: 8px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .poll-container { margin-top: 10px; }
+        .poll-option { background: rgba(0,0,0,0.4); border: 1px solid #d4af37; border-radius: 6px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
+        .poll-option:hover { background: rgba(212,175,55,0.2); }
+        .poll-text { z-index: 2; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+        .poll-votes { z-index: 2; font-size: 12px; color: #ffeb3b; background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 10px; }
+        
+        #custom-alert { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(10, 30, 25, 0.95); border: 2px solid #d4af37; color: white; padding: 12px 20px; border-radius: 8px; z-index: 99999; display: flex; align-items: center; gap: 10px; transition: top 0.5s; box-shadow: 0 5px 15px rgba(0,0,0,0.5); width: 80%; max-width: 300px; }
+        #custom-alert.show { top: 20px; }
+    </style>
+</head>
+<body>
+    <div id="custom-alert"><span>✨</span><span id="alert-msg" style="font-size:13px; font-weight:bold;"></span></div>
+
+    <div class="top-bar">
+        <div class="date-time-scroll">
+            <span class="bangla-date" id="bn-date">লোড হচ্ছে...</span><span class="divider">|</span>
+            <span class="english-date" id="en-date">Loading...</span><span class="divider">|</span>
+            <span class="arabic-date" id="ar-date">يتم التحميل...</span><span class="divider">|</span>
+            <span class="time-text" id="time">00:00 PM</span>
+        </div>
+    </div>
+
+    <!-- স্ক্রলিং নিউজ ট্রিকার -->
+    <div class="ticker-container">
+        <div class="ticker-label">আপডেট</div>
+        <div class="ticker-wrap"><div class="ticker-text" id="ticker-text">খবর লোড হচ্ছে...</div></div>
+    </div>
+
+    <div class="slider-container" id="slider-container">
+        <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=800&q=80" class="active">
+    </div>
+
+    <div class="button-group">
+        <div class="btn btn-blue">📰 নিউজ ফিড</div>
+        <a href="members.html" class="btn btn-red">👥 সদস্যবৃন্দ</a>
+        <a href="chat.html" class="btn btn-green">💬 মতামত</a>
+        <div class="btn btn-purple" onclick="toggleSidebar()">☰</div>
+    </div>
+
+    <div id="sidebar">
+        <div class="close-btn" onclick="toggleSidebar()">✖</div>
+        <a href="user.html" class="menu-item">👤 ইউজার প্রোফাইল</a>
+        <a href="#" class="menu-item" onclick="logout()" style="color: #ff5252;">🚪 লগআউট</a>
+    </div>
+
+    <div class="news-feed-container" id="news-list">
+        <p style="text-align:center; color:#aaa; font-size: 12px;">পোস্ট লোড হচ্ছে...</p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, doc, getDoc, onSnapshot, query, orderBy, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyBOZk0sV04IXr3uLD9BlNUnndJ6LIfvHag", authDomain: "ummah-41fcf.firebaseapp.com", projectId: "ummah-41fcf" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const myPhone = localStorage.getItem("loggedInUser");
+
+        if(!myPhone) window.location.href = "index.html"; 
+        
+        window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('open');
+        window.logout = () => { localStorage.removeItem("loggedInUser"); window.location.href = "index.html"; }
+        window.showAlert = (msg) => { document.getElementById('alert-msg').innerText = msg; const a = document.getElementById('custom-alert'); a.classList.add('show'); setTimeout(()=>a.classList.remove('show'), 3000); }
+
+        onSnapshot(doc(db, "settings", "ticker"), (docSnap) => {
+            if (docSnap.exists()) document.getElementById('ticker-text').innerText = docSnap.data().text;
+        });
+
+        onSnapshot(collection(db, "slider"), (snap) => {
+            let html = '', count = 0;
+            snap.forEach(d => { html += `<img src="${d.data().imageUrl}" class="${count === 0 ? 'active' : ''}">`; count++; });
+            if(count > 0) {
+                document.getElementById('slider-container').innerHTML = html;
+                let c = 0; const imgs = document.querySelectorAll('#slider-container img');
+                if(imgs.length > 1) setInterval(() => { imgs[c].classList.remove('active'); c = (c+1)%imgs.length; imgs[c].classList.add('active'); }, 4000);
+            }
+        });
+
+        const q = query(collection(db, "news"), orderBy("timestamp", "desc"));
+        onSnapshot(q, (querySnapshot) => {
+            let html = '';
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const postId = docSnap.id;
+                
+                let pollHtml = '';
+                if(data.pollOptions && data.pollOptions.length > 0) {
+                    pollHtml = '<div class="poll-container">';
+                    data.pollOptions.forEach((opt, index) => {
+                        const hasVoted = data.votedBy && data.votedBy.includes(myPhone);
+                        const isMyVote = data.votesDetails && data.votesDetails[myPhone] === index;
+                        const tickMark = isMyVote ? '✅ ' : '🔘 ';
+                        pollHtml += `
+                            <div class="poll-option" onclick="submitVote('${postId}', ${index})">
+                                <div class="poll-text">${tickMark}${opt.text}</div>
+                                <div class="poll-votes">${opt.votes} ভোট</div>
+                            </div>
+                        `;
+                    });
+                    pollHtml += '</div>';
+                }
+
+                html += `
+                    <div class="fb-post">
+                        ${data.title ? `<div class="post-title">${data.title}</div>` : ''}
+                        ${data.text ? `<div class="post-body">${data.text}</div>` : ''}
+                        ${data.image ? `<img src="${data.image}" class="post-image">` : ''}
+                        ${pollHtml}
+                    </div>
+                `;
+            });
+            document.getElementById('news-list').innerHTML = html || '<p style="text-align:center;">কোনো আপডেট নেই</p>';
+        });
+
+        window.submitVote = async function(postId, optIndex) {
+            const postRef = doc(db, "news", postId);
+            const snap = await getDoc(postRef);
+            const data = snap.data();
+            
+            if(data.votedBy && data.votedBy.includes(myPhone)) {
+                showAlert("আপনি ইতিমধ্যে ভোট দিয়েছেন!"); return;
+            }
+            
+            let options = data.pollOptions;
+            options[optIndex].votes += 1;
+            
+            let votedBy = data.votedBy || [];
+            votedBy.push(myPhone);
+
+            let votesDetails = data.votesDetails || {};
+            votesDetails[myPhone] = optIndex;
+
+            await updateDoc(postRef, { pollOptions: options, votedBy: votedBy, votesDetails: votesDetails });
+            showAlert("ভোট দেওয়ার জন্য ধন্যবাদ!");
+        }
+
+        setInterval(()=>{ const d=new Date(); document.getElementById('time').innerText=d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true}); document.getElementById('en-date').innerText=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); try{ document.getElementById('bn-date').innerText=new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'short',year:'numeric'}).format(d); document.getElementById('ar-date').innerText=d.toLocaleDateString('ar-SA',{day:'numeric',month:'short',year:'numeric'});}catch(e){}}, 1000);
+    </script>
+</body>
+</html>
