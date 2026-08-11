@@ -38,24 +38,23 @@
             z-index: 10;
         }
 
-        /* RGB রানিং নিয়ন বর্ডার (শার্প বা স্পষ্ট লাইন) */
+        /* RGB রানিং নিয়ন বর্ডার */
         .glass-panel::before {
             content: "";
             position: absolute;
-            inset: 0; /* প্যানেলের চারপাশে বসবে */
+            inset: 0; 
             border-radius: 25px;
-            padding: 2.5px; /* বর্ডারের পুরুত্ব */
+            padding: 2.5px; 
             background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
             background-size: 200% 100%;
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
-            animation: rgbRunning 5s linear infinite; /* স্লো মোশন এনিমেশন */
+            animation: rgbRunning 5s linear infinite; 
             pointer-events: none;
             z-index: 1;
         }
 
-        /* RGB নিয়ন গ্লো (হালকা ছড়ানো আলো) */
         .glass-panel::after {
             content: "";
             position: absolute;
@@ -69,12 +68,11 @@
             mask-composite: exclude;
             animation: rgbRunning 5s linear infinite;
             pointer-events: none;
-            filter: blur(10px); /* আলোকে ছড়ানোর জন্য ব্লার */
+            filter: blur(10px); 
             opacity: 0.8;
             z-index: -1;
         }
 
-        /* আরজিবি (RGB) লাইট চলার এনিমেশন */
         @keyframes rgbRunning {
             0% { background-position: 200% 0; }
             100% { background-position: 0 0; }
@@ -120,14 +118,12 @@
 
         .divider-star { color: #d4af37; font-size: 16px; margin: 15px 0; }
 
-        /* টগল টেক্সট */
         .toggle-text { font-size: 14px; color: #fff; margin: 0; display: flex; justify-content: center; align-items: center; gap: 6px; position: relative; z-index: 5; }
         .toggle-text span { color: #d4af37; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; }
         .toggle-text span svg { fill: #d4af37; width: 16px; height: 16px; }
 
         #signup-form { display: none; }
 
-        /* কাস্টম এলার্ট */
         #custom-alert { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(10, 30, 20, 0.95); border: 1px solid #d4af37; color: white; padding: 12px 20px; border-radius: 8px; z-index: 99999; display: flex; align-items: center; gap: 10px; transition: top 0.4s ease-in-out; box-shadow: 0 5px 15px rgba(0,0,0,0.5); width: 85%; max-width: 320px; }
         #custom-alert.show { top: 20px; }
     </style>
@@ -138,8 +134,7 @@
     
     <div class="main-container">
         
-        <!-- গ্লাস প্যানেল (এর বর্ডারে এখন RGB লাইট জ্বলবে) -->
-        <div class="glass-panel">
+        <div class="glass-panel" id="auth-panel" style="display: none;">
             
             <!-- লগইন ফর্ম -->
             <div id="login-form">
@@ -184,7 +179,7 @@
                 </button>
 
                 <div class="divider-star">✧</div>
-                <p class="toggle-text">অ্যাকাউন্ট আছে? <span onclick="toggleForm('login')">প্রবেশ করুন <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1-.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></span></p>
+                <p class="toggle-text">অ্যাকাউন্ট আছে? <span onclick="toggleForm('login')">প্রবেশ করুন <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1-.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg></span></p>
             </div>
         </div>
 
@@ -193,6 +188,14 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // অটো লগইন চেক: যদি আগে লগইন করা থাকে, তাহলে সরাসরি হোমে নিয়ে যাবে
+        if(localStorage.getItem("loggedInUser")) {
+            window.location.href = "home.html";
+        } else {
+            // যদি লগইন করা না থাকে, তবেই ফর্মটি দেখাবে
+            document.getElementById('auth-panel').style.display = 'block';
+        }
 
         const firebaseConfig = { apiKey: "AIzaSyBOZk0sV04IXr3uLD9BlNUnndJ6LIfvHag", authDomain: "ummah-41fcf.firebaseapp.com", projectId: "ummah-41fcf" };
         const app = initializeApp(firebaseConfig);
