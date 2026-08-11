@@ -8,23 +8,25 @@
         body { margin: 0; font-family: sans-serif; background: #05161a; min-height: 100vh; color: white; overflow-x: hidden; padding-bottom: 20px;}
         .top-bar { background-color: #050505; color: #fff; padding: 6px 5px; font-size: 10.5px; border: 1px solid #d4af37; border-radius: 4px; margin: 4px; white-space: nowrap; overflow-x: auto; }
         .top-bar::-webkit-scrollbar { display: none; }
-        .date-time-scroll { display: flex; align-items: center; justify-content: center; gap: 3px; }
+        .date-time-scroll { display: flex; align-items: center; justify-content: center; gap: 4px; }
         .bangla-date, .time-text { color: #ffeb3b; font-weight: bold; }
         .english-date { color: #8bc34a; font-weight: bold; }
         .arabic-date { color: #00bcd4; font-weight: bold; }
         .divider { color: #ffffff; margin: 0 1px; }
 
-        /* নিউজ ট্রিকার - স্পিড স্লো করা হয়েছে (25s) */
+        /* নিউজ ট্রিকার */
         .ticker-container { display: flex; background: rgba(0,0,0,0.8); border: 1px solid #d4af37; border-radius: 4px; margin: 4px; overflow: hidden; align-items: center; position: relative; }
         .ticker-label { background: #d4af37; color: #000; font-weight: bold; padding: 4px 10px; font-size: 11px; z-index: 10; position: relative; box-shadow: 2px 0 5px rgba(0,0,0,0.5); }
         .ticker-wrap { flex: 1; overflow: hidden; position: relative; white-space: nowrap; }
         .ticker-text { display: inline-block; padding-left: 100%; animation: ticker 25s linear infinite; font-size: 13px; color: #ffeb3b; font-weight: bold; }
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
+        /* ইমেজ ক্যারোজেল (স্লাইডার) */
         .slider-container { margin: 4px; border-radius: 6px; overflow: hidden; border: 2px solid #d4af37; position: relative; height: 180px; }
-        .slider-container img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1s ease-in-out; }
-        .slider-container img.active { opacity: 1; }
+        .slider-wrapper { display: flex; transition: transform 0.6s ease-in-out; height: 100%; width: 100%; }
+        .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; }
 
+        /* বাটন গ্রুপ */
         .button-group { display: flex; margin: 4px; gap: 4px; }
         .btn { flex: 1; padding: 7px 4px; color: white; text-align: center; border: 1px solid #d4af37; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 3px; }
         .btn-blue { background-color: #153e7e; }
@@ -32,11 +34,13 @@
         .btn-green { background-color: #1e7a1e; }
         .btn-purple { background-color: #6a1b9a; flex: 0.3; } 
 
+        /* সাইডবার */
         #sidebar { position: fixed; top: 0; right: -250px; width: 220px; height: 100%; background: rgba(5, 22, 26, 0.95); backdrop-filter: blur(10px); border-left: 2px solid #d4af37; box-shadow: -5px 0 15px rgba(0,0,0,0.5); transition: right 0.3s ease; z-index: 1000; padding-top: 50px; }
         #sidebar.open { right: 0; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #d4af37; }
         .menu-item { display: block; padding: 15px 20px; color: white; text-decoration: none; border-bottom: 1px solid rgba(212, 175, 55, 0.3); font-size: 16px; transition: 0.3s; }
         
+        /* পোস্ট ফিড */
         .news-feed-container { margin: 10px 4px; }
         .fb-post { background: linear-gradient(135deg, #05161a, #0b4533); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
         .post-title { font-size: 18px; color: #d4af37; font-weight: bold; margin-bottom: 8px; border-bottom: 1px dashed rgba(212,175,55,0.4); padding-bottom: 5px; }
@@ -71,8 +75,11 @@
         <div class="ticker-wrap"><div class="ticker-text" id="ticker-text">খবর লোড হচ্ছে...</div></div>
     </div>
 
-    <div class="slider-container" id="slider-container">
-        <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=800&q=80" class="active">
+    <!-- ইমেজ ক্যারোজেল (স্লাইডার) -->
+    <div class="slider-container">
+        <div class="slider-wrapper" id="slider-wrapper">
+            <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=800&q=80">
+        </div>
     </div>
 
     <div class="button-group">
@@ -111,16 +118,29 @@
             if (docSnap.exists()) document.getElementById('ticker-text').innerText = docSnap.data().text;
         });
 
+        // নতুন ইমেজ ক্যারোজেল লজিক
         onSnapshot(collection(db, "slider"), (snap) => {
             let html = '', count = 0;
-            snap.forEach(d => { html += `<img src="${d.data().imageUrl}" class="${count === 0 ? 'active' : ''}">`; count++; });
+            snap.forEach(d => { html += `<img src="${d.data().imageUrl}">`; count++; });
             if(count > 0) {
-                document.getElementById('slider-container').innerHTML = html;
-                let c = 0; const imgs = document.querySelectorAll('#slider-container img');
-                if(imgs.length > 1) setInterval(() => { imgs[c].classList.remove('active'); c = (c+1)%imgs.length; imgs[c].classList.add('active'); }, 4000);
+                const wrapper = document.getElementById('slider-wrapper');
+                wrapper.innerHTML = html;
+                let c = 0;
+                
+                if(window.sliderInterval) clearInterval(window.sliderInterval);
+                
+                if(count > 1) {
+                    window.sliderInterval = setInterval(() => { 
+                        c = (c + 1) % count; 
+                        wrapper.style.transform = `translateX(-${c * 100}%)`; 
+                    }, 4000);
+                } else {
+                    wrapper.style.transform = `translateX(0%)`;
+                }
             }
         });
 
+        // নিউজ ফিড ও পোল 
         const q = query(collection(db, "news"), orderBy("timestamp", "desc"));
         onSnapshot(q, (querySnapshot) => {
             let html = '';
@@ -179,7 +199,68 @@
             showAlert("ভোট দেওয়ার জন্য ধন্যবাদ!");
         }
 
-        setInterval(()=>{ const d=new Date(); document.getElementById('time').innerText=d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true}); document.getElementById('en-date').innerText=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); try{ document.getElementById('bn-date').innerText=new Intl.DateTimeFormat('bn-BD',{day:'numeric',month:'short',year:'numeric'}).format(d); document.getElementById('ar-date').innerText=d.toLocaleDateString('ar-SA',{day:'numeric',month:'short',year:'numeric'});}catch(e){}}, 1000);
+        // বাংলা সংখ্যায় কনভার্ট করার ফাংশন
+        function toBanglaDigits(num) {
+            const digits = { '0':'০', '1':'১', '2':'২', '3':'৩', '4':'৪', '5':'৫', '6':'৬', '7':'৭', '8':'৮', '9':'৯' };
+            return num.toString().replace(/\d/g, m => digits[m]);
+        }
+
+        // সঠিক বাংলা ক্যালেন্ডার (বঙ্গাব্দ) লজিক
+        function getBanglaDate(date) {
+            const year = date.getFullYear();
+            const isLeap = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+            const bMonths = ["বৈশাখ", "জ্যৈষ্ঠ", "আষাঢ়", "শ্রাবণ", "ভাদ্র", "আশ্বিন", "কার্তিক", "অগ্রহায়ণ", "পৌষ", "মাঘ", "ফাল্গুন", "চৈত্র"];
+            const bDays = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, isLeap ? 30 : 29, 30];
+            
+            let bYear = year - 593;
+            let start = new Date(year, 3, 14, 0, 0, 0); 
+            
+            if (date < start) {
+                bYear -= 1;
+                start = new Date(year - 1, 3, 14, 0, 0, 0); 
+                const isPrevLeap = ((year-1) % 4 === 0 && (year-1) % 100 !== 0) || ((year-1) % 400 === 0);
+                bDays[10] = isPrevLeap ? 30 : 29;
+            }
+            
+            const diffDays = Math.floor((date.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+            let daysLeft = diffDays;
+            let monthIndex = 0;
+            
+            while (daysLeft >= bDays[monthIndex]) {
+                daysLeft -= bDays[monthIndex];
+                monthIndex++;
+            }
+            
+            return toBanglaDigits(daysLeft + 1) + " " + bMonths[monthIndex] + " " + toBanglaDigits(bYear);
+        }
+
+        // হিজরি তারিখ বাংলায় কনভার্ট
+        function getHijriDate(date) {
+            try {
+                const formatter = new Intl.DateTimeFormat('en-US', { calendar: 'islamic-umalqura', day: 'numeric', month: 'numeric', year: 'numeric' });
+                let id, im, iy;
+                for(let p of formatter.formatToParts(date)) {
+                    if(p.type === 'day') id = p.value;
+                    if(p.type === 'month') im = p.value;
+                    if(p.type === 'year') iy = p.value;
+                }
+                const bnHijriMonths = ["মহররম", "সফর", "রবিউল আউয়াল", "রবিউস সানি", "জুমাদাল আউয়াল", "জুমাদাস সানি", "রজব", "শাবান", "রমজান", "শাওয়াল", "জিলকদ", "জিলহজ"];
+                return toBanglaDigits(id) + " " + bnHijriMonths[parseInt(im) - 1] + " " + toBanglaDigits(iy.split(" ")[0]);
+            } catch(e) { return "হিজরি ক্যালেন্ডার"; }
+        }
+
+        // টাইম ও ডেট আপডেট
+        function updateDateTime() {
+            const d = new Date();
+            document.getElementById('time').innerText = d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', hour12:true}); 
+            document.getElementById('en-date').innerText = d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}); 
+            
+            // নতুন বাংলা ও আরবি ডেট ফাংশন যুক্ত করা হলো
+            document.getElementById('bn-date').innerText = getBanglaDate(d);
+            document.getElementById('ar-date').innerText = getHijriDate(d);
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // পেজ লোড হলেই সাথে সাথে দেখানোর জন্য
     </script>
 </body>
 </html>
