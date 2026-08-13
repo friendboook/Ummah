@@ -16,95 +16,99 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        #capture-area {
-            width: 100%; max-width: 750px; 
-            aspect-ratio: 3 / 4; 
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-            display: flex; flex-direction: column;
-            padding: 30px;
-            border: 2px solid #e0e0e0;
+        /* ইউজার ইনপুট এরিয়া */
+        .input-container {
+            width: 100%; max-width: 500px; background: #fff; padding: 25px; border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1); border-top: 5px solid #061a3a; margin-bottom: 30px;
         }
-
-        .watermark {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 350px; height: 350px;
-            background: url('https://iili.io/CPX3zjR.png') no-repeat center center/cover;
-            border-radius: 50%; opacity: 0.3; z-index: 1; pointer-events: none;
-        }
-
-        .form-header { text-align: center; z-index: 5; position: relative; border-bottom: 2px solid #d4af37; padding-bottom: 15px; margin-bottom: 20px; }
-        .form-header h1 { color: #061a3a; font-size: 32px; margin: 0; font-weight: 700; }
-        .form-header h1 span { color: #d4af37; font-size: 24px; vertical-align: middle; }
-        .form-header h3 { color: #b8860b; font-size: 16px; margin: 5px 0 10px 0; font-weight: 600; }
-        .badge { background: #061a3a; color: white; padding: 6px 20px; border-radius: 20px; font-size: 14px; display: inline-block; }
-
-        .section-title {
-            background: #061a3a; color: white; padding: 8px 30px 8px 15px; 
-            display: inline-block; font-size: 16px; font-weight: bold;
-            clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); 
-            margin-bottom: 15px; z-index: 5; position: relative;
-        }
-        .section-line { height: 2px; background: #061a3a; width: 100%; margin-top: -24px; margin-bottom: 25px; z-index: 4; position: relative;}
-
-        .form-grid { display: grid; grid-template-columns: 1fr; gap: 15px; z-index: 5; position: relative; flex: 1; }
-        .input-row { display: flex; align-items: center; justify-content: space-between; }
-        .input-label { display: flex; align-items: center; gap: 10px; font-size: 15px; color: #333; font-weight: 600; width: 45%; }
-        .input-icon { width: 30px; height: 30px; background: #f0f4f8; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #061a3a; }
+        .input-container h2 { text-align: center; color: #061a3a; margin-top: 0; border-bottom: 2px dashed #ccc; padding-bottom: 10px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-weight: bold; color: #333; margin-bottom: 5px; font-size: 14px; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; font-size: 15px; }
+        .input-group input:focus, .input-group select:focus { border-color: #d4af37; outline: none; }
+        .sig-input { font-family: 'Great Vibes', cursive; font-size: 24px !important; color: #061a3a; }
         
-        .input-field {
-            width: 55%; padding: 10px 15px; border: 1px solid #ccc; border-radius: 6px;
-            font-family: inherit; font-size: 14px; background: rgba(255,255,255,0.8);
-            outline: none; transition: 0.3s;
-        }
-        .input-field:focus { border-color: #061a3a; box-shadow: 0 0 5px rgba(6, 26, 58, 0.2); }
-        select.input-field { cursor: pointer; }
-
-        .signature-box { border: 1px dashed #ccc; border-radius: 6px; padding: 15px; text-align: center; background: rgba(255,255,255,0.7); margin-bottom: 10px; z-index: 5; position: relative; }
-        .signature-input {
-            border: none; border-bottom: 1px solid #666; width: 80%; background: transparent;
-            text-align: center; outline: none; padding: 5px; color: #061a3a;
-            font-family: 'Great Vibes', cursive; font-size: 32px;
-        }
-
-        .action-buttons { display: flex; justify-content: center; gap: 15px; margin-top: -25px; margin-bottom: 30px; z-index: 20; position: relative; }
-        .btn { padding: 12px 25px; border: none; border-radius: 6px; font-weight: bold; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: inherit; transition: 0.3s; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .btn-submit { background: #061a3a; width: auto; min-width: 200px; justify-content: center; }
+        .btn-submit { width: 100%; padding: 14px; background: #061a3a; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         .btn-submit:hover { background: #0a2955; }
-        
-        .search-container {
-            width: 100%; max-width: 750px; background: #fff; border-radius: 10px; padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-top: 4px solid #061a3a; margin-bottom: 20px;
+
+        /* --- হুবহু ছবির মত প্রিন্ট টেমপ্লেট (ব্যাকগ্রাউন্ডে লুকানো থাকবে) --- */
+        #print-template {
+            position: fixed; top: 0; left: 0; z-index: -10; opacity: 0; /* স্ক্রিনে দেখা যাবে না */
+            width: 800px; height: 1066px; /* ৩:৪ রেশিও */
+            background: #ffffff;
+            padding: 40px;
+            display: flex; flex-direction: column;
         }
-        .search-header { background: #061a3a; color: white; padding: 8px 25px; display: inline-block; border-radius: 20px; margin-top: -45px; margin-bottom: 20px; font-weight: bold; font-size: 16px; border: 3px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .search-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
-        .search-row label { font-weight: bold; color: #333; }
-        .search-row input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; min-width: 200px; }
-        .btn-search { background: #061a3a; color: white; padding: 12px 30px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; }
         
-        .info-box { background: #eef4fc; border-left: 4px solid #061a3a; padding: 12px 15px; margin-top: 15px; font-size: 13.5px; color: #333; border-radius: 4px; display: flex; gap: 10px; align-items: center; }
-        .info-icon { background: #061a3a; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 12px; flex-shrink: 0; }
-        .footer-note { background: #061a3a; color: white; width: 100%; max-width: 750px; padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px; font-size: 14px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .footer-note span { color: #d4af37; font-weight: bold; }
+        /* কর্নার ডিজাইন (CSS Border & Gradient) */
+        .print-border {
+            position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 2px solid #d4af37; border-radius: 20px; z-index: 1; pointer-events: none;
+        }
+        .corner-accent { position: absolute; width: 100px; height: 100px; background: #061a3a; z-index: 2; }
+        .tl { top: 0; left: 0; border-bottom-right-radius: 100%; }
+        .tr { top: 0; right: 0; border-bottom-left-radius: 100%; }
+        .bl { bottom: 0; left: 0; border-top-right-radius: 100%; }
+        .br { bottom: 0; right: 0; border-top-left-radius: 100%; }
+        .corner-gold { position: absolute; width: 110px; height: 110px; border: 4px solid #d4af37; z-index: 1; }
+        .gtl { top: -4px; left: -4px; border-bottom-right-radius: 100%; border-top: none; border-left: none; }
+        .gtr { top: -4px; right: -4px; border-bottom-left-radius: 100%; border-top: none; border-right: none; }
+        .gbl { bottom: -4px; left: -4px; border-top-right-radius: 100%; border-bottom: none; border-left: none; }
+        .gbr { bottom: -4px; right: -4px; border-top-left-radius: 100%; border-bottom: none; border-right: none; }
 
-        svg { width: 16px; height: 16px; fill: currentColor; }
+        .print-watermark {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 450px; height: 450px; background: url('https://iili.io/CPX3zjR.png') no-repeat center center/cover;
+            border-radius: 50%; opacity: 0.15; z-index: 3;
+        }
 
-        /* --- Custom Modal Design --- */
+        .print-content { z-index: 5; position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; }
+        
+        .p-header { text-align: center; margin-bottom: 30px; margin-top: 20px; }
+        .p-header h1 { color: #061a3a; font-size: 42px; margin: 0; font-weight: 700; }
+        .p-header h1 span { color: #d4af37; font-size: 30px; vertical-align: middle; }
+        .p-header h3 { color: #b8860b; font-size: 22px; margin: 5px 0 15px 0; font-weight: 600; }
+        .p-badge { background: #061a3a; color: white; padding: 10px 40px; border-radius: 30px; font-size: 18px; display: inline-block; font-weight: bold; }
+
+        .p-section-title {
+            background: #061a3a; color: white; padding: 10px 40px 10px 20px; 
+            display: inline-block; font-size: 20px; font-weight: bold;
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); 
+            margin-bottom: 20px; border-radius: 4px 0 0 4px;
+        }
+        .p-section-line { height: 2px; background: #061a3a; width: 100%; margin-top: -30px; margin-bottom: 30px; }
+
+        .p-row { display: flex; margin-bottom: 25px; align-items: flex-end; }
+        .p-label { width: 250px; font-size: 18px; color: #333; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+        .p-label svg { fill: #061a3a; width: 24px; height: 24px; }
+        .p-colon { width: 30px; font-size: 18px; font-weight: bold; text-align: center; color: #333; margin-bottom: 5px;}
+        .p-value { flex: 1; font-size: 22px; color: #111; border-bottom: 2px solid #061a3a; padding-bottom: 5px; font-weight: 600; }
+
+        .p-sig-box { border: 2px dashed #061a3a; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 20px; background: rgba(255,255,255,0.6); }
+        .p-sig-text { font-family: 'Great Vibes', cursive; font-size: 55px; color: #061a3a; margin: 10px 0; border-bottom: 1px solid #999; display: inline-block; min-width: 300px; padding: 0 20px; }
+        .p-sig-desc { font-size: 16px; color: #333; font-weight: bold; margin-top: 10px; }
+
+        .p-footer { display: flex; justify-content: space-between; gap: 20px; margin-top: auto; }
+        .p-id-box { flex: 1.5; background: #061a3a; border: 3px solid #d4af37; border-radius: 10px; padding: 15px 20px; display: flex; align-items: center; gap: 15px; color: white; }
+        .p-id-box h4 { margin: 0; font-size: 18px; font-weight: normal; }
+        .p-id-box h2 { margin: 0; font-size: 34px; letter-spacing: 5px; color: #d4af37; }
+        
+        .p-date-box { flex: 1; background: #f0f0f0; border: 2px solid #061a3a; border-radius: 10px; padding: 15px 20px; display: flex; align-items: center; gap: 15px; color: #061a3a; }
+        .p-date-box h4 { margin: 0; font-size: 16px; font-weight: bold; }
+        .p-date-box h2 { margin: 0; font-size: 24px; font-weight: bold; }
+
+        .p-bottom-note { border: 1px solid #ccc; border-radius: 8px; padding: 15px; text-align: center; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 15px; font-size: 16px; font-weight: 600; color: #333; background: #fff; }
+
+        /* --- Modal (পপ-আপ) --- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
-        .modal-content { background: #fff; color: #333; padding: 25px; border-radius: 12px; width: 100%; max-width: 420px; text-align: center; border-top: 5px solid #061a3a; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; animation: popUp 0.3s ease-out; }
-        @keyframes popUp { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .modal-content { background: #fff; color: #333; padding: 25px; border-radius: 12px; width: 100%; max-width: 420px; text-align: center; border-top: 5px solid #061a3a; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .modal-content h3 { color: #061a3a; margin-top: 0; font-size: 22px; }
         .modal-box { text-align: left; margin-bottom: 15px; background: #f4f7f6; padding: 12px; border-radius: 8px; border: 1px solid #ddd; }
         .modal-box span { display: block; font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #061a3a; }
         .copy-group { display: flex; gap: 8px; }
         .copy-group input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; background: #fff; color: #555; outline: none; }
-        .copy-group button { background: #b8860b; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
-        .copy-group button:hover { background: #d4af37; }
-        .modal-close { background: #a81c1c; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 100%; font-size: 15px; transition: 0.3s; }
-        .modal-close:hover { background: #cc2222; }
+        .copy-group button { background: #b8860b; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .modal-close { background: #a81c1c; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 100%; font-size: 15px; }
         .instruction-text { font-size: 12px; color: #a81c1c; margin-top: 5px; font-weight: bold; text-align: center; }
 
         /* Loading */
@@ -112,147 +116,177 @@
         .spinner { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid #d4af37; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @media(max-width: 600px) {
-            .input-row { flex-direction: column; align-items: flex-start; gap: 5px; }
-            .input-label, .input-field { width: 100%; }
-            #capture-area { padding: 15px; height: auto; aspect-ratio: auto; min-height: 800px; }
-        }
+        /* Search Container */
+        .search-container { width: 100%; max-width: 500px; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); border-top: 5px solid #061a3a; text-align: center; }
+        .search-container input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; outline: none; text-align: center;}
     </style>
 </head>
 <body>
 
-    <!-- লোডিং স্ক্রিন -->
     <div id="loading">
         <div class="spinner"></div>
         <h3 id="loading-text">ফরম প্রসেসিং হচ্ছে...</h3>
     </div>
 
-    <!-- উন্নত পপ-আপ মেসেজ (Modal) -->
+    <!-- পপ-আপ মেসেজ (Modal) -->
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-content">
             <h3 id="modal-title">আলহামদুলিল্লাহ!</h3>
             <p id="modal-desc" style="color:#555; font-size:14.5px; margin-bottom: 20px;">আপনার ফরম সফলভাবে তৈরি হয়েছে।</p>
-
             <div class="modal-box">
                 <span>আপনার ইউনিক আইডি:</span>
                 <div class="copy-group">
                     <input type="text" id="modal-id" readonly>
-                    <button onclick="copyText('modal-id')"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> কপি</button>
+                    <button onclick="copyText('modal-id')">কপি</button>
                 </div>
             </div>
-
             <div class="modal-box">
                 <span>ডাউনলোড লিংক:</span>
                 <div class="copy-group">
                     <input type="text" id="modal-link" readonly>
-                    <button onclick="copyText('modal-link')"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> কপি</button>
+                    <button onclick="copyText('modal-link')">কপি</button>
                 </div>
                 <div class="instruction-text">ডাউনলোড করতে এই লিংকটা কপি করে ক্রোম ব্রাউজারে পেস্ট করুন।</div>
             </div>
-
             <button class="modal-close" onclick="closeModal()">বন্ধ করুন</button>
         </div>
     </div>
 
-    <!-- ফরম প্রিন্ট এরিয়া -->
-    <div id="capture-area">
-        <div class="watermark"></div>
-
-        <div class="form-header">
-            <h1><span>✧</span> সদস্য ভর্তি ফরম <span>✧</span></h1>
-            <h3>— উম্মাহ ইউনাইটেড অর্গানাইজেশন —</h3>
-            <div class="badge">সঠিক তথ্য দিন, ভবিষ্যৎ গঠনে অংশ নিন</div>
+    <!-- ইউজার ইনপুট ফর্ম (স্ক্রিনে এটি দেখা যাবে) -->
+    <div class="input-container">
+        <h2>সদস্য ভর্তি ফরম পূরণ</h2>
+        <div class="input-group">
+            <label>আপনার আসল নাম (NID অনুযায়ী)</label>
+            <input type="text" id="in-name" placeholder="মোঃ রেজওয়ান হোসাইন">
         </div>
-
-        <div class="section-title">
-            <svg viewBox="0 0 24 24" style="margin-right: 5px; margin-bottom:-3px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> ব্যক্তিগত তথ্য
+        <div class="input-group">
+            <label>আপনার বাবার নাম</label>
+            <input type="text" id="in-father" placeholder="মোঃ আব্দুল করিম">
         </div>
-        <div class="section-line"></div>
-
-        <div class="form-grid">
-            <div class="input-row">
-                <div class="input-label"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div> আপনার আসল নাম লিখুন<br>( NID অনুযায়ী)</div>
-                <input type="text" id="p-name" class="input-field" placeholder="এখানে আপনার আসল নাম লিখুন">
-            </div>
-            <div class="input-row">
-                <div class="input-label"><div class="input-icon"><svg viewBox="0 0 24 24" fill="#b8860b"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div> আপনার বাবার নাম লিখুন</div>
-                <input type="text" id="p-father" class="input-field" placeholder="এখানে আপনার বাবার নাম লিখুন">
-            </div>
-            <div class="input-row">
-                <div class="input-label"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg></div> আপনার জন্মতারিখ<br>(NID অনুযায়ী)</div>
-                <input type="date" id="p-dob" class="input-field">
-            </div>
-            <div class="input-row">
-                <div class="input-label"><div class="input-icon"><svg viewBox="0 0 24 24" fill="#a81c1c"><path d="M12 2c-5.33 4.55-8 8.48-8 11.8 0 4.98 3.8 8.2 8 8.2s8-3.22 8-8.2c0-3.32-2.67-7.25-8-11.8z"/></svg></div> আপনার রক্তের গ্রুপ</div>
-                <select id="p-blood" class="input-field">
-                    <option value="" disabled selected>রক্তের গ্রুপ নির্বাচন করুন</option>
-                    <option value="A+">A+</option><option value="A-">A-</option>
-                    <option value="B+">B+</option><option value="B-">B-</option>
-                    <option value="O+">O+</option><option value="O-">O-</option>
-                    <option value="AB+">AB+</option><option value="AB-">AB-</option>
-                </select>
-            </div>
-            <div class="input-row">
-                <div class="input-label"><div class="input-icon"><svg viewBox="0 0 24 24" fill="#d4af37"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div> আপনার গ্রামের নাম</div>
-                <input type="text" id="p-village" class="input-field" placeholder="এখানে আপনার গ্রামের নাম লিখুন">
-            </div>
-            <div class="input-row">
-                <div class="input-label"><div class="input-icon"><svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg></div> আপনার বর্তমান পেশা</div>
-                <input type="text" id="p-job" class="input-field" placeholder="এখানে আপনার বর্তমান পেশা লিখুন">
-            </div>
+        <div class="input-group">
+            <label>আপনার জন্মতারিখ (NID অনুযায়ী)</label>
+            <input type="date" id="in-dob">
         </div>
-
-        <br>
-        <div class="section-title">
-            <svg viewBox="0 0 24 24" style="margin-right: 5px; margin-bottom:-3px;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg> ইলেকট্রনিক সাক্ষর
+        <div class="input-group">
+            <label>আপনার রক্তের গ্রুপ</label>
+            <select id="in-blood">
+                <option value="" disabled selected>রক্তের গ্রুপ নির্বাচন করুন</option>
+                <option value="A+ (এ পজিটিভ)">A+ (এ পজিটিভ)</option><option value="A- (এ নেগেটিভ)">A- (এ নেগেটিভ)</option>
+                <option value="B+ (বি পজিটিভ)">B+ (বি পজিটিভ)</option><option value="B- (বি নেগেটিভ)">B- (বি নেগেটিভ)</option>
+                <option value="O+ (ও পজিটিভ)">O+ (ও পজিটিভ)</option><option value="O- (ও নেগেটিভ)">O- (ও নেগেটিভ)</option>
+                <option value="AB+ (এবি পজিটিভ)">AB+ (এবি পজিটিভ)</option><option value="AB- (এবি নেগেটিভ)">AB- (এবি নেগেটিভ)</option>
+            </select>
         </div>
-        <div class="section-line"></div>
-        
-        <div class="signature-box">
-            <svg viewBox="0 0 24 24" style="fill: #666; margin-right: 5px; vertical-align: middle;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/></svg>
-            <input type="text" id="p-sig" class="signature-input" placeholder="Type your signature here in English">
+        <div class="input-group">
+            <label>আপনার গ্রামের নাম</label>
+            <input type="text" id="in-village" placeholder="কাশিপুর, ধোয়ারা, ময়মনসিংহ">
         </div>
+        <div class="input-group">
+            <label>আপনার বর্তমান পেশা</label>
+            <input type="text" id="in-job" placeholder="গ্রাফিক ডিজাইনার">
+        </div>
+        <div class="input-group">
+            <label>ইলেকট্রনিক সাক্ষর (ইংরেজিতে)</label>
+            <input type="text" id="in-sig" class="sig-input" placeholder="Type Name (eg: Rezwan Hossain)">
+        </div>
+        <button class="btn-submit" onclick="submitForm()">ফরম জমা দিন ও তৈরি করুন</button>
     </div>
 
-    <!-- সাবমিট বাটন -->
-    <div class="action-buttons">
-        <button class="btn btn-submit" id="submit-btn" onclick="submitForm()">
-            <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> ফরম জমা দিন
-        </button>
-    </div>
-
-    <div style="margin: 15px 0;">
-        <svg viewBox="0 0 24 24" style="fill: #d4af37; width: 30px; height: 30px;"><path d="M12 2L14.8 8.6L22 9.7L16.8 14.7L18.1 22L12 18.8L5.9 22L7.2 14.7L2 9.7L9.2 8.6L12 2Z"/></svg>
-    </div>
-
-    <!-- ফরম খুঁজুন সেকশন -->
     <div class="search-container">
-        <div class="search-header">
-            <svg viewBox="0 0 24 24" style="margin-right: 5px; margin-bottom:-3px;"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            আপনার ফরম খুজে নিন
-        </div>
-        
-        <div class="search-row">
-            <label>আপনার আইডি নাম্বার দিন</label>
-            <input type="number" id="search-id" placeholder="৬ সংখ্যার আইডি নাম্বার দিন">
-            <button class="btn-search" onclick="findForm()">
-                <svg viewBox="0 0 24 24" style="margin-right:5px; vertical-align:middle; fill:white;"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                ফরম খুঁজুন
-            </button>
-        </div>
-        
-        <div class="info-box">
-            <div class="info-icon">i</div>
-            <div>ফরম জমা দেওয়ার পর আপনাকে একটি ৬ সংখ্যার আইডি প্রদান করা হবে। এই আইডি দিয়ে আপনি আপনার ফরম খুঁজে পেতে এবং ডাউনলোড করতে পারবেন।</div>
+        <h3 style="color: #061a3a; margin-top: 0;">আপনার ফরম খুজে নিন</h3>
+        <input type="number" id="search-id" placeholder="৬ সংখ্যার আইডি নাম্বার দিন">
+        <button class="btn-submit" onclick="findForm()">ফরম খুঁজুন</button>
+        <p style="font-size: 12px; color: #a81c1c; font-weight: bold; margin-bottom: 0;">ফরম জমা দেওয়ার পর পাওয়া ৬ সংখ্যার আইডি দিয়ে খুঁজুন।</p>
+    </div>
+
+    <!-- হিডেন প্রিন্ট টেমপ্লেট (ছবি হিসেবে যা সেভ হবে) -->
+    <div id="print-template">
+        <!-- Corner Graphics -->
+        <div class="corner-accent tl"></div><div class="corner-gold gtl"></div>
+        <div class="corner-accent tr"></div><div class="corner-gold gtr"></div>
+        <div class="corner-accent bl"></div><div class="corner-gold gbl"></div>
+        <div class="corner-accent br"></div><div class="corner-gold gbr"></div>
+        <div class="print-border"></div>
+
+        <div class="print-watermark"></div>
+
+        <div class="print-content">
+            <div class="p-header">
+                <h1><span>✧</span> সদস্য ভর্তি ফরম <span>✧</span></h1>
+                <h3>— উম্মাহ ইউনাইটেড অর্গানাইজেশন —</h3>
+                <div class="p-badge">সঠিক তথ্য দিন, ভবিষ্যৎ গঠনে অংশ নিন</div>
+            </div>
+
+            <div class="p-section-title">ব্যক্তিগত তথ্য</div>
+            <div class="p-section-line"></div>
+
+            <div class="p-row">
+                <div class="p-label"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> <span>আপনার আসল নাম লিখুন<br><small style="font-weight:normal;">( NID অনুযায়ী )</small></span></div>
+                <div class="p-colon">:</div>
+                <div class="p-value" id="out-name"></div>
+            </div>
+            <div class="p-row">
+                <div class="p-label"><svg viewBox="0 0 24 24" fill="#b8860b"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg> <span>আপনার বাবার নাম লিখুন</span></div>
+                <div class="p-colon">:</div>
+                <div class="p-value" id="out-father"></div>
+            </div>
+            <div class="p-row">
+                <div class="p-label"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg> <span>আপনার জন্মতারিখ<br><small style="font-weight:normal;">( NID অনুযায়ী )</small></span></div>
+                <div class="p-colon">:</div>
+                <div class="p-value" id="out-dob"></div>
+            </div>
+            <div class="p-row">
+                <div class="p-label"><svg viewBox="0 0 24 24" fill="#a81c1c"><path d="M12 2c-5.33 4.55-8 8.48-8 11.8 0 4.98 3.8 8.2 8 8.2s8-3.22 8-8.2c0-3.32-2.67-7.25-8-11.8z"/></svg> <span>আপনার রক্তের গ্রুপ</span></div>
+                <div class="p-colon">:</div>
+                <div class="p-value" id="out-blood"></div>
+            </div>
+            <div class="p-row">
+                <div class="p-label"><svg viewBox="0 0 24 24" fill="#d4af37"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> <span>আপনার গ্রামের নাম</span></div>
+                <div class="p-colon">:</div>
+                <div class="p-value" id="out-village"></div>
+            </div>
+            <div class="p-row">
+                <div class="p-label"><svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg> <span>আপনার বর্তমান পেশা</span></div>
+                <div class="p-colon">:</div>
+                <div class="p-value" id="out-job"></div>
+            </div>
+
+            <div class="p-section-title" style="margin-top: 10px;">ইলেকট্রনিক সাক্ষর</div>
+            <div class="p-section-line"></div>
+            
+            <div class="p-sig-box">
+                <div class="p-sig-text" id="out-sig"></div>
+                <div class="p-sig-desc">আমি উপরোক্ত তথ্যসমূহ সঠিক ও সত্য বলে স্বীকার করছি।</div>
+            </div>
+
+            <div class="p-footer">
+                <div class="p-id-box">
+                    <svg viewBox="0 0 24 24" style="fill:#d4af37; width:40px; height:40px;"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    <div>
+                        <h4>আপনার আইডি নম্বর</h4>
+                        <h2 id="out-id">------</h2>
+                    </div>
+                </div>
+                <div class="p-date-box">
+                    <svg viewBox="0 0 24 24" style="fill:#061a3a; width:40px; height:40px;"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                    <div>
+                        <h4>আবেদন তারিখ</h4>
+                        <h2 id="out-date">--/--/----</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-bottom-note">
+                <svg viewBox="0 0 24 24" style="fill:#061a3a; width:30px; height:30px;"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+                <div>
+                    এই ফরমটি প্রিন্ট করে সভাপতির নিকট জমা দিন।<br>
+                    <small style="color:#666; font-size:14px;">এই ফরমটি শুধুমাত্র আপনার ব্যবহারের জন্য। তথ্য পরিবর্তন করা যাবে না।</small>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- ফুটার নোট -->
-    <div class="footer-note">
-        <svg viewBox="0 0 24 24" style="width:24px; height:24px; fill:#d4af37;"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-        <div><span>গুরুত্বপূর্ণ নির্দেশনা:</span> ফরমটি পূরণ করার পর লিংক কপি করে ব্রাউজারে পেস্ট করে জেপিজি ডাউনলোড করুন এবং প্রিন্ট করে সভাপতির নিকট জমা দিন।</div>
-    </div>
-
+    <!-- ফায়ারবেস স্ক্রিপ্ট -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -277,19 +311,41 @@
         function generateUniqueId() {
             return Math.floor(100000 + Math.random() * 900000).toString();
         }
+        
+        function formatDate(dateStr) {
+            if(!dateStr) return "";
+            const [y, m, d] = dateStr.split('-');
+            return `${d}/${m}/${y}`;
+        }
 
         window.submitForm = async function() {
-            const name = document.getElementById('p-name').value;
-            const father = document.getElementById('p-father').value;
-            const dob = document.getElementById('p-dob').value;
-            const blood = document.getElementById('p-blood').value;
-            const village = document.getElementById('p-village').value;
-            const job = document.getElementById('p-job').value;
-            const sig = document.getElementById('p-sig').value;
+            // ইনপুট ভ্যালু নেওয়া
+            const name = document.getElementById('in-name').value;
+            const father = document.getElementById('in-father').value;
+            const dob = document.getElementById('in-dob').value;
+            const blood = document.getElementById('in-blood').value;
+            const village = document.getElementById('in-village').value;
+            const job = document.getElementById('in-job').value;
+            const sig = document.getElementById('in-sig').value;
 
             if(!name || !father || !dob || !blood || !village || !job || !sig) {
-                alert("দয়া করে ফরমের সকল তথ্য এবং স্বাক্ষর সঠিকভাবে পূরণ করুন!"); return;
+                alert("দয়া করে ফরমের সকল তথ্য সঠিকভাবে পূরণ করুন!"); return;
             }
+
+            const uniqueId = generateUniqueId();
+            const today = new Date();
+            const applyDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth()+1).toString().padStart(2, '0')}/${today.getFullYear()}`;
+
+            // হিডেন টেমপ্লেটে ডাটা বসানো
+            document.getElementById('out-name').innerText = name;
+            document.getElementById('out-father').innerText = father;
+            document.getElementById('out-dob').innerText = formatDate(dob);
+            document.getElementById('out-blood').innerText = blood;
+            document.getElementById('out-village').innerText = village;
+            document.getElementById('out-job').innerText = job;
+            document.getElementById('out-sig').innerText = sig;
+            document.getElementById('out-id').innerText = uniqueId;
+            document.getElementById('out-date').innerText = applyDate;
 
             const loading = document.getElementById('loading');
             const loadingText = document.getElementById('loading-text');
@@ -297,14 +353,17 @@
             
             try {
                 loadingText.innerText = "ছবি তৈরি হচ্ছে...";
-                const captureArea = document.getElementById('capture-area');
-                const canvas = await html2canvas(captureArea, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+                const printTemplate = document.getElementById('print-template');
+                
+                // ক্যানভাসে কনভার্ট (High Quality 2x scale)
+                const canvas = await html2canvas(printTemplate, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
                 const base64Image = canvas.toDataURL("image/jpeg", 0.9);
 
                 loadingText.innerText = "সার্ভারে সেভ হচ্ছে...";
                 const formData = new FormData();
                 formData.append("image", base64Image.split(',')[1]);
                 
+                // ImgBB তে আপলোড
                 const uploadRes = await fetch("https://api.imgbb.com/1/upload?key=9f5aeefecfb7dcb8325725caa75734a0", {
                     method: "POST", body: formData
                 });
@@ -312,20 +371,23 @@
                 
                 if(imgData.success) {
                     const imageUrl = imgData.data.url;
-                    const uniqueId = generateUniqueId();
                     
+                    // ফায়ারবেসে সেভ করা
                     await setDoc(doc(db, "offline_forms", uniqueId), {
                         name: name, imageUrl: imageUrl, timestamp: Date.now()
                     });
 
-                    // মডাল ওপেন করা এবং ডাটা সেট করা
+                    // মডাল ওপেন করা
                     document.getElementById('modal-title').innerText = "আলহামদুলিল্লাহ!";
-                    document.getElementById('modal-desc').innerText = "আপনার ফরম সফলভাবে জমা হয়েছে।";
+                    document.getElementById('modal-desc').innerText = "আপনার ফরম সফলভাবে তৈরি হয়েছে।";
                     document.getElementById('modal-id').value = uniqueId;
                     document.getElementById('modal-link').value = imageUrl;
                     
                     loading.style.display = 'none';
                     document.getElementById('custom-modal').style.display = 'flex';
+                    
+                    // ইনপুট ক্লিয়ার
+                    document.querySelectorAll('.input-group input, .input-group select').forEach(i => i.value = '');
                     
                 } else { throw new Error("Image Upload Failed"); }
 
@@ -350,7 +412,6 @@
                 loading.style.display = 'none';
 
                 if (docSnap.exists()) {
-                    // মডাল ওপেন করা এবং পাওয়া লিংক দেওয়া
                     document.getElementById('modal-title').innerText = "ফরম পাওয়া গেছে!";
                     document.getElementById('modal-desc').innerText = "নিচের লিংকটি কপি করে আপনার ফরমটি ডাউনলোড করুন।";
                     document.getElementById('modal-id').value = searchId;
