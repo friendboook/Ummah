@@ -38,7 +38,8 @@
         #sidebar { position: fixed; top: 0; right: -250px; width: 220px; height: 100%; background: rgba(5, 22, 26, 0.95); backdrop-filter: blur(10px); border-left: 2px solid #d4af37; box-shadow: -5px 0 15px rgba(0,0,0,0.5); transition: right 0.3s ease; z-index: 1000; padding-top: 50px; }
         #sidebar.open { right: 0; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #d4af37; }
-        .menu-item { display: block; padding: 15px 20px; color: white; text-decoration: none; border-bottom: 1px solid rgba(212, 175, 55, 0.3); font-size: 16px; transition: 0.3s; }
+        .menu-item { display: block; padding: 15px 20px; color: white; text-decoration: none; border-bottom: 1px solid rgba(212, 175, 55, 0.3); font-size: 16px; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        .menu-item:hover { background: rgba(212, 175, 55, 0.1); }
         
         /* পোস্ট ফিড */
         .news-feed-container { margin: 10px 4px; }
@@ -93,8 +94,9 @@
     <div id="sidebar">
         <div class="close-btn" onclick="toggleSidebar()">✖</div>
         <a href="user.html" class="menu-item">👤 ইউজার প্রোফাইল</a>
-        <a href="form.html" class="menu-item">📝 সদস্য ভর্তি ফরম</a> <!-- নতুন মেনু আইটেম -->
-        <a href="#" class="menu-item" onclick="logout()" style="color: #ff5252;">🚪 লগআউট</a>
+        <a href="form.html" class="menu-item">📝 সদস্য ভর্তি ফরম</a>
+        <a href="fund.html" class="menu-item">💰 ফান্ড ও অনুদান</a> <!-- ফান্ড অপশনটি যুক্ত করা হলো -->
+        <a href="#" class="menu-item" onclick="logout()" style="color: #ff5252; margin-top: 20px; border-top: 1px solid rgba(255,82,82,0.3);">🚪 লগআউট</a>
     </div>
 
     <div class="news-feed-container" id="news-list">
