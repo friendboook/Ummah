@@ -89,9 +89,11 @@
         <div class="btn btn-purple" onclick="toggleSidebar()">☰</div>
     </div>
 
+    <!-- সাইডবার মেনু -->
     <div id="sidebar">
         <div class="close-btn" onclick="toggleSidebar()">✖</div>
         <a href="user.html" class="menu-item">👤 ইউজার প্রোফাইল</a>
+        <a href="form.html" class="menu-item">📝 সদস্য ভর্তি ফরম</a> <!-- নতুন মেনু আইটেম -->
         <a href="#" class="menu-item" onclick="logout()" style="color: #ff5252;">🚪 লগআউট</a>
     </div>
 
@@ -118,7 +120,7 @@
             if (docSnap.exists()) document.getElementById('ticker-text').innerText = docSnap.data().text;
         });
 
-        // নতুন ইমেজ ক্যারোজেল লজিক
+        // ইমেজ ক্যারোজেল লজিক
         onSnapshot(collection(db, "slider"), (snap) => {
             let html = '', count = 0;
             snap.forEach(d => { html += `<img src="${d.data().imageUrl}">`; count++; });
@@ -255,12 +257,11 @@
             document.getElementById('time').innerText = d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', hour12:true}); 
             document.getElementById('en-date').innerText = d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}); 
             
-            // নতুন বাংলা ও আরবি ডেট ফাংশন যুক্ত করা হলো
             document.getElementById('bn-date').innerText = getBanglaDate(d);
             document.getElementById('ar-date').innerText = getHijriDate(d);
         }
         setInterval(updateDateTime, 1000);
-        updateDateTime(); // পেজ লোড হলেই সাথে সাথে দেখানোর জন্য
+        updateDateTime(); 
     </script>
 </body>
 </html>
