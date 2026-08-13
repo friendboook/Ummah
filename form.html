@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>সদস্য ভর্তি ফরম - UMMMAH UNITED</title>
-    <!-- বাংলা ফন্ট এবং ইংরেজি সিগনেচার ফন্ট (Great Vibes) -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Serif+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- HTML to Canvas (JPG জেনারেটর) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
@@ -14,14 +12,13 @@
         body { 
             margin: 0; padding: 20px 10px; 
             font-family: 'Noto Serif Bengali', serif; 
-            background-color: #f4f7f6; /* ছবির মতো হালকা ব্যাকগ্রাউন্ড */
+            background-color: #f4f7f6; 
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* মূল প্রিন্ট এরিয়া (৩:৪ রেশিও) */
         #capture-area {
             width: 100%; max-width: 750px; 
-            aspect-ratio: 3 / 4; /* ৩:৪ রেশিও */
+            aspect-ratio: 3 / 4; 
             background: #ffffff;
             border-radius: 10px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
@@ -32,39 +29,28 @@
             border: 2px solid #e0e0e0;
         }
 
-        /* ব্যাকগ্রাউন্ড লোগো (ওয়াটারমার্ক) */
         .watermark {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 350px; height: 350px;
             background: url('https://iili.io/CPX3zjR.png') no-repeat center center/cover;
-            border-radius: 50%;
-            opacity: 0.3; /* ৩০% অপাসিটি */
-            z-index: 1;
-            pointer-events: none;
+            border-radius: 50%; opacity: 0.3; z-index: 1; pointer-events: none;
         }
 
-        /* হেডার ডিজাইন */
         .form-header { text-align: center; z-index: 5; position: relative; border-bottom: 2px solid #d4af37; padding-bottom: 15px; margin-bottom: 20px; }
-        .form-header h1 { color: #061a3a; font-size: 32px; margin: 0; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+        .form-header h1 { color: #061a3a; font-size: 32px; margin: 0; font-weight: 700; }
         .form-header h1 span { color: #d4af37; font-size: 24px; vertical-align: middle; }
         .form-header h3 { color: #b8860b; font-size: 16px; margin: 5px 0 10px 0; font-weight: 600; }
         .badge { background: #061a3a; color: white; padding: 6px 20px; border-radius: 20px; font-size: 14px; display: inline-block; }
 
-        /* সেকশন টাইটেল */
         .section-title {
             background: #061a3a; color: white; padding: 8px 30px 8px 15px; 
             display: inline-block; font-size: 16px; font-weight: bold;
-            clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); /* বাঁকা ডিজাইন */
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); 
             margin-bottom: 15px; z-index: 5; position: relative;
         }
         .section-line { height: 2px; background: #061a3a; width: 100%; margin-top: -24px; margin-bottom: 25px; z-index: 4; position: relative;}
 
-        /* ফর্ম গ্রিড */
-        .form-grid {
-            display: grid; grid-template-columns: 1fr; gap: 15px; z-index: 5; position: relative; flex: 1;
-        }
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 15px; z-index: 5; position: relative; flex: 1; }
         .input-row { display: flex; align-items: center; justify-content: space-between; }
         .input-label { display: flex; align-items: center; gap: 10px; font-size: 15px; color: #333; font-weight: 600; width: 45%; }
         .input-icon { width: 30px; height: 30px; background: #f0f4f8; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #061a3a; }
@@ -77,24 +63,18 @@
         .input-field:focus { border-color: #061a3a; box-shadow: 0 0 5px rgba(6, 26, 58, 0.2); }
         select.input-field { cursor: pointer; }
 
-        /* সিগনেচার এরিয়া */
         .signature-box { border: 1px dashed #ccc; border-radius: 6px; padding: 15px; text-align: center; background: rgba(255,255,255,0.7); margin-bottom: 10px; z-index: 5; position: relative; }
         .signature-input {
             border: none; border-bottom: 1px solid #666; width: 80%; background: transparent;
             text-align: center; outline: none; padding: 5px; color: #061a3a;
-            font-family: 'Great Vibes', cursive; /* ইংরেজি সিগনেচার ফন্ট */
-            font-size: 32px;
+            font-family: 'Great Vibes', cursive; font-size: 32px;
         }
 
-        /* বাটন গ্রুপ (ক্যাপচার এরিয়ার বাইরে) */
         .action-buttons { display: flex; justify-content: center; gap: 15px; margin-top: -25px; margin-bottom: 30px; z-index: 20; position: relative; }
         .btn { padding: 12px 25px; border: none; border-radius: 6px; font-weight: bold; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: inherit; transition: 0.3s; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .btn-submit { background: #061a3a; }
+        .btn-submit { background: #061a3a; width: auto; min-width: 200px; justify-content: center; }
         .btn-submit:hover { background: #0a2955; }
-        .btn-download { background: #b8860b; display: none; } /* প্রথমদিকে হাইড থাকবে */
-        .btn-download:hover { background: #d4af37; }
         
-        /* সার্চ এরিয়া (আপনার ফরম খুঁজে নিন) */
         .search-container {
             width: 100%; max-width: 750px; background: #fff; border-radius: 10px; padding: 25px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-top: 4px solid #061a3a; margin-bottom: 20px;
@@ -105,18 +85,29 @@
         .search-row input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; min-width: 200px; }
         .btn-search { background: #061a3a; color: white; padding: 12px 30px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; }
         
-        /* ইনফো বক্স */
         .info-box { background: #eef4fc; border-left: 4px solid #061a3a; padding: 12px 15px; margin-top: 15px; font-size: 13.5px; color: #333; border-radius: 4px; display: flex; gap: 10px; align-items: center; }
         .info-icon { background: #061a3a; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 12px; flex-shrink: 0; }
-
-        /* ফুটার নোট */
         .footer-note { background: #061a3a; color: white; width: 100%; max-width: 750px; padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px; font-size: 14px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .footer-note span { color: #d4af37; font-weight: bold; }
 
-        /* SVG আইকনস */
         svg { width: 16px; height: 16px; fill: currentColor; }
 
-        /* লোডিং ওভারলে */
+        /* --- Custom Modal Design --- */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
+        .modal-content { background: #fff; color: #333; padding: 25px; border-radius: 12px; width: 100%; max-width: 420px; text-align: center; border-top: 5px solid #061a3a; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; animation: popUp 0.3s ease-out; }
+        @keyframes popUp { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .modal-content h3 { color: #061a3a; margin-top: 0; font-size: 22px; }
+        .modal-box { text-align: left; margin-bottom: 15px; background: #f4f7f6; padding: 12px; border-radius: 8px; border: 1px solid #ddd; }
+        .modal-box span { display: block; font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #061a3a; }
+        .copy-group { display: flex; gap: 8px; }
+        .copy-group input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; background: #fff; color: #555; outline: none; }
+        .copy-group button { background: #b8860b; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
+        .copy-group button:hover { background: #d4af37; }
+        .modal-close { background: #a81c1c; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 100%; font-size: 15px; transition: 0.3s; }
+        .modal-close:hover { background: #cc2222; }
+        .instruction-text { font-size: 12px; color: #a81c1c; margin-top: 5px; font-weight: bold; text-align: center; }
+
+        /* Loading */
         #loading { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; }
         .spinner { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid #d4af37; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -130,28 +121,51 @@
 </head>
 <body>
 
-    <!-- ফুল পেজ লোডিং স্ক্রিন -->
+    <!-- লোডিং স্ক্রিন -->
     <div id="loading">
         <div class="spinner"></div>
         <h3 id="loading-text">ফরম প্রসেসিং হচ্ছে...</h3>
     </div>
 
-    <!-- ফরম প্রিন্ট/ক্যাপচার এরিয়া -->
+    <!-- উন্নত পপ-আপ মেসেজ (Modal) -->
+    <div id="custom-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="modal-title">আলহামদুলিল্লাহ!</h3>
+            <p id="modal-desc" style="color:#555; font-size:14.5px; margin-bottom: 20px;">আপনার ফরম সফলভাবে তৈরি হয়েছে।</p>
+
+            <div class="modal-box">
+                <span>আপনার ইউনিক আইডি:</span>
+                <div class="copy-group">
+                    <input type="text" id="modal-id" readonly>
+                    <button onclick="copyText('modal-id')"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> কপি</button>
+                </div>
+            </div>
+
+            <div class="modal-box">
+                <span>ডাউনলোড লিংক:</span>
+                <div class="copy-group">
+                    <input type="text" id="modal-link" readonly>
+                    <button onclick="copyText('modal-link')"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> কপি</button>
+                </div>
+                <div class="instruction-text">ডাউনলোড করতে এই লিংকটা কপি করে ক্রোম ব্রাউজারে পেস্ট করুন।</div>
+            </div>
+
+            <button class="modal-close" onclick="closeModal()">বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <!-- ফরম প্রিন্ট এরিয়া -->
     <div id="capture-area">
-        <!-- ব্যাকগ্রাউন্ড লোগো -->
         <div class="watermark"></div>
 
-        <!-- হেডার -->
         <div class="form-header">
             <h1><span>✧</span> সদস্য ভর্তি ফরম <span>✧</span></h1>
             <h3>— উম্মাহ ইউনাইটেড অর্গানাইজেশন —</h3>
             <div class="badge">সঠিক তথ্য দিন, ভবিষ্যৎ গঠনে অংশ নিন</div>
         </div>
 
-        <!-- ব্যক্তিগত তথ্য -->
         <div class="section-title">
-            <svg viewBox="0 0 24 24" style="margin-right: 5px; margin-bottom:-3px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> 
-            ব্যক্তিগত তথ্য
+            <svg viewBox="0 0 24 24" style="margin-right: 5px; margin-bottom:-3px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> ব্যক্তিগত তথ্য
         </div>
         <div class="section-line"></div>
 
@@ -189,10 +203,8 @@
         </div>
 
         <br>
-        <!-- সিগনেচার -->
         <div class="section-title">
-            <svg viewBox="0 0 24 24" style="margin-right: 5px; margin-bottom:-3px;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg> 
-            ইলেকট্রনিক সাক্ষর
+            <svg viewBox="0 0 24 24" style="margin-right: 5px; margin-bottom:-3px;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg> ইলেকট্রনিক সাক্ষর
         </div>
         <div class="section-line"></div>
         
@@ -202,14 +214,11 @@
         </div>
     </div>
 
-    <!-- বাটন গ্রুপ -->
+    <!-- সাবমিট বাটন -->
     <div class="action-buttons">
         <button class="btn btn-submit" id="submit-btn" onclick="submitForm()">
             <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> ফরম জমা দিন
         </button>
-        <a id="download-btn" class="btn btn-download" download="UMMAH_Admission_Form.jpg">
-            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> জেপিজি ডাউনলোড করুন
-        </a>
     </div>
 
     <div style="margin: 15px 0;">
@@ -241,10 +250,9 @@
     <!-- ফুটার নোট -->
     <div class="footer-note">
         <svg viewBox="0 0 24 24" style="width:24px; height:24px; fill:#d4af37;"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-        <div><span>গুরুত্বপূর্ণ নির্দেশনা:</span> ফরমটি পূরণ করার পর জেপিজি ডাউনলোড করে প্রিন্ট করুন এবং সভাপতির নিকট জমা দিন।</div>
+        <div><span>গুরুত্বপূর্ণ নির্দেশনা:</span> ফরমটি পূরণ করার পর লিংক কপি করে ব্রাউজারে পেস্ট করে জেপিজি ডাউনলোড করুন এবং প্রিন্ট করে সভাপতির নিকট জমা দিন।</div>
     </div>
 
-    <!-- ফায়ারবেস স্ক্রিপ্ট -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -253,13 +261,24 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // ৬ ডিজিটের রেন্ডম ইউনিক আইডি তৈরি
+        // টেক্সট কপি করার ফাংশন
+        window.copyText = function(elementId) {
+            const copyText = document.getElementById(elementId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); 
+            navigator.clipboard.writeText(copyText.value);
+            alert("কপি করা হয়েছে!");
+        }
+
+        window.closeModal = function() {
+            document.getElementById('custom-modal').style.display = 'none';
+        }
+
         function generateUniqueId() {
             return Math.floor(100000 + Math.random() * 900000).toString();
         }
 
         window.submitForm = async function() {
-            // ইনপুট ভেরিফিকেশন
             const name = document.getElementById('p-name').value;
             const father = document.getElementById('p-father').value;
             const dob = document.getElementById('p-dob').value;
@@ -277,60 +296,45 @@
             loading.style.display = 'flex';
             
             try {
-                // ১. HTML থেকে JPG (Canvas) তৈরি করা
                 loadingText.innerText = "ছবি তৈরি হচ্ছে...";
                 const captureArea = document.getElementById('capture-area');
-                
-                // ক্যানভাসে কনভার্ট (High Quality)
-                const canvas = await html2canvas(captureArea, { 
-                    scale: 2, 
-                    useCORS: true, 
-                    backgroundColor: "#ffffff" 
-                });
-                
+                const canvas = await html2canvas(captureArea, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
                 const base64Image = canvas.toDataURL("image/jpeg", 0.9);
 
-                // ২. ImgBB তে অটো আপলোড
                 loadingText.innerText = "সার্ভারে সেভ হচ্ছে...";
                 const formData = new FormData();
                 formData.append("image", base64Image.split(',')[1]);
                 
                 const uploadRes = await fetch("https://api.imgbb.com/1/upload?key=9f5aeefecfb7dcb8325725caa75734a0", {
-                    method: "POST",
-                    body: formData
+                    method: "POST", body: formData
                 });
                 const imgData = await uploadRes.json();
                 
                 if(imgData.success) {
                     const imageUrl = imgData.data.url;
-                    
-                    // ৩. ফায়ারবেসে আইডি সহ সেভ করা
                     const uniqueId = generateUniqueId();
+                    
                     await setDoc(doc(db, "offline_forms", uniqueId), {
-                        name: name,
-                        imageUrl: imageUrl,
-                        timestamp: Date.now()
+                        name: name, imageUrl: imageUrl, timestamp: Date.now()
                     });
 
-                    // ৪. ডাউনলোড বাটন চালু করা
-                    const downloadBtn = document.getElementById('download-btn');
-                    downloadBtn.href = base64Image;
-                    downloadBtn.style.display = 'flex';
-                    document.getElementById('submit-btn').style.display = 'none';
-
+                    // মডাল ওপেন করা এবং ডাটা সেট করা
+                    document.getElementById('modal-title').innerText = "আলহামদুলিল্লাহ!";
+                    document.getElementById('modal-desc').innerText = "আপনার ফরম সফলভাবে জমা হয়েছে।";
+                    document.getElementById('modal-id').value = uniqueId;
+                    document.getElementById('modal-link').value = imageUrl;
+                    
                     loading.style.display = 'none';
-                    alert("আলহামদুলিল্লাহ! আপনার ফরম সফলভাবে জমা হয়েছে।\n\nআপনার আইডি নাম্বার: " + uniqueId + "\n\nদয়া করে আইডিটি সংরক্ষণ করুন এবং ফরমটি ডাউনলোড করুন।");
+                    document.getElementById('custom-modal').style.display = 'flex';
                     
                 } else { throw new Error("Image Upload Failed"); }
 
             } catch (error) {
                 loading.style.display = 'none';
                 alert("দুঃখিত, কোনো একটি সমস্যা হয়েছে। ইন্টারনেট চেক করে আবার চেষ্টা করুন।");
-                console.error(error);
             }
         }
 
-        // ফরম খোঁজার ফাংশন
         window.findForm = async function() {
             const searchId = document.getElementById('search-id').value;
             if(!searchId || searchId.length !== 6) {
@@ -346,9 +350,13 @@
                 loading.style.display = 'none';
 
                 if (docSnap.exists()) {
-                    const url = docSnap.data().imageUrl;
-                    // সরাসরি নতুন ট্যাবে ইমেজ ওপেন করবে যেন ইউজার সেভ করতে পারে
-                    window.open(url, '_blank'); 
+                    // মডাল ওপেন করা এবং পাওয়া লিংক দেওয়া
+                    document.getElementById('modal-title').innerText = "ফরম পাওয়া গেছে!";
+                    document.getElementById('modal-desc').innerText = "নিচের লিংকটি কপি করে আপনার ফরমটি ডাউনলোড করুন।";
+                    document.getElementById('modal-id').value = searchId;
+                    document.getElementById('modal-link').value = docSnap.data().imageUrl;
+                    
+                    document.getElementById('custom-modal').style.display = 'flex';
                 } else {
                     alert("দুঃখিত, এই আইডি নাম্বারের কোনো ফরম পাওয়া যায়নি। সঠিক আইডি দিন।");
                 }
