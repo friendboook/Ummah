@@ -30,14 +30,18 @@
         .text-red { color: #ff5252 !important; }
         .text-gold { color: #d4af37 !important; }
 
-        /* টেবিল (হিসেবের খাতা) ডিজাইন */
+        /* টেবিল ডিজাইন */
         .table-section { background: rgba(0, 0, 0, 0.4); border-radius: 10px; padding: 15px; border: 1px solid rgba(212,175,55,0.2); margin-bottom: 30px; }
         .table-section h3 { margin-top: 0; color: #d4af37; border-bottom: 1px dashed rgba(212,175,55,0.4); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; }
         .table-wrapper { overflow-x: auto; padding-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; min-width: 800px; white-space: nowrap; }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; white-space: nowrap; }
         th, td { padding: 12px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
         th { background: rgba(212, 175, 55, 0.15); color: #d4af37; font-weight: bold; }
-        td:first-child, th:first-child { text-align: left; font-weight: bold; position: sticky; left: 0; background: #061814; z-index: 2; border-right: 2px solid #d4af37; }
+        
+        /* শুধু চাঁদার খাতার জন্য স্টিকি কলাম */
+        .ledger-table { min-width: 800px; }
+        .ledger-table td:first-child, .ledger-table th:first-child { text-align: left; font-weight: bold; position: sticky; left: 0; background: #061814; z-index: 2; border-right: 2px solid #d4af37; }
+        
         tr:nth-child(even) { background: rgba(255,255,255,0.02); }
         tr:hover { background: rgba(212, 175, 55, 0.05); }
 
@@ -97,14 +101,14 @@
         <div class="table-section">
             <h3>📖 সদস্যদের মাসিক চাঁদার খাতা</h3>
             <div class="table-wrapper">
-                <table>
+                <table class="ledger-table">
                     <thead>
                         <tr>
                             <th>সদস্যের নাম</th>
                             <th>জানু</th><th>ফেব্রু</th><th>মার্চ</th><th>এপ্রি</th>
                             <th>মে</th><th>জুন</th><th>জুলা</th><th>আগ</th>
                             <th>সেপ্টে</th><th>অক্টো</th><th>নভে</th><th>ডিসে</th>
-                            <th style="color:#4caf50;">মোট জমা</th>
+                            <th style="color:#4caf50;">মোট চাঁদা</th>
                         </tr>
                     </thead>
                     <tbody id="ledger-list">
@@ -112,14 +116,32 @@
                     </tbody>
                 </table>
             </div>
-            <p style="font-size:12px; color:#aaa; text-align:right; margin-top:10px;">* মোট জমার মধ্যে মাসিক চাঁদা এবং স্বেচ্ছায় অনুদান উভয়ই অন্তর্ভুক্ত।</p>
+        </div>
+
+        <!-- স্বেচ্ছায় অনুদানের তালিকা -->
+        <div class="table-section">
+            <h3 style="color:#4caf50;">💖 স্বেচ্ছায় অনুদানের তালিকা</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">তারিখ</th>
+                            <th style="text-align:left;">সদস্যের নাম</th>
+                            <th style="text-align:right;">পরিমাণ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="donation-list">
+                        <tr><td colspan="3" style="text-align:center;">লোড হচ্ছে...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- ব্যয়ের তালিকা -->
         <div class="table-section">
             <h3 style="color:#ff5252;">📤 উন্নয়নমূলক ব্যয়ের তালিকা</h3>
             <div class="table-wrapper">
-                <table style="min-width: 500px;">
+                <table>
                     <thead>
                         <tr>
                             <th style="text-align:left;">তারিখ</th>
@@ -178,54 +200,59 @@
             document.getElementById('current-balance').innerText = toBanglaDigits(balance);
         }
 
-        // আয়/চাঁদা লোড করা এবং মাসিক খাতা (Ledger) তৈরি করা
+        // আয় লোড করা (চাঁদা এবং ডোনেশন আলাদা করা)
         const qInc = query(collection(db, "fund_income"), orderBy("timestamp", "asc"));
         onSnapshot(qInc, (snap) => {
-            let membersData = {};
+            let membersData = {}; // চাঁদার জন্য
+            let donationHtml = ''; // অনুদানের টেবিলের জন্য
             totalInc = 0;
 
             snap.forEach(doc => {
                 const data = doc.data();
                 const amount = Number(data.amount);
-                totalInc += amount;
+                totalInc += amount; // মোট জমার সাথে যুক্ত হবে
                 
                 const name = data.name.trim();
                 
-                // যদি সদস্যের নাম অবজেক্টে না থাকে, তবে নতুন এন্ট্রি তৈরি করো
-                if(!membersData[name]) {
-                    membersData[name] = { total: 0, months: {} };
-                }
-
-                // মোট জমার সাথে বর্তমান পরিমাণ যোগ করো
-                membersData[name].total += amount;
-
-                // যদি টাইপ "চাঁদা" হয় এবং নির্দিষ্ট মাসের নাম থাকে, তবে সেই মাসে ট্রু (✅) মার্ক করে দাও
-                if(data.type === 'চাঁদা' && data.month) {
-                    membersData[name].months[data.month] = true;
+                if (data.type === 'চাঁদা') {
+                    // শুধু চাঁদার খাতার লজিক
+                    if(!membersData[name]) {
+                        membersData[name] = { totalSub: 0, months: {} };
+                    }
+                    membersData[name].totalSub += amount;
+                    if(data.month) {
+                        membersData[name].months[data.month] = true;
+                    }
+                } else if (data.type === 'ডোনেশন') {
+                    // স্বেচ্ছায় অনুদানের লজিক
+                    const date = new Date(data.timestamp).toLocaleDateString('en-GB');
+                    donationHtml += `<tr>
+                        <td style="text-align:left;">${toBanglaDigits(date)}</td>
+                        <td style="text-align:left;">${name}</td>
+                        <td style="text-align:right; color:#4caf50; font-weight:bold;">৳ ${toBanglaDigits(amount)}</td>
+                    </tr>`;
                 }
             });
 
-            // ১২ মাসের নাম (শর্ট ফর্ম টেবিলের জন্য, ফুল ফর্ম চেকের জন্য)
+            // মাসিক খাতার (Ledger) HTML তৈরি
             const monthKeys = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-            
-            let html = '';
+            let ledgerHtml = '';
             for(const [name, info] of Object.entries(membersData)) {
-                html += `<tr><td>${name}</td>`;
+                ledgerHtml += `<tr><td>${name}</td>`;
                 
-                // ১২ মাসের লুপ চালিয়ে চেক করা যে সে ওই মাসে টাকা দিয়েছে কিনা
                 monthKeys.forEach(m => {
                     if(info.months[m]) {
-                        html += `<td><span class="tick-mark">✅</span></td>`;
+                        ledgerHtml += `<td><span class="tick-mark">✅</span></td>`;
                     } else {
-                        html += `<td><span class="cross-mark">-</span></td>`;
+                        ledgerHtml += `<td><span class="cross-mark">-</span></td>`;
                     }
                 });
 
-                // মোট টাকার পরিমাণ
-                html += `<td><span class="total-amount">৳ ${toBanglaDigits(info.total)}</span></td></tr>`;
+                ledgerHtml += `<td><span class="total-amount">৳ ${toBanglaDigits(info.totalSub)}</span></td></tr>`;
             }
 
-            document.getElementById('ledger-list').innerHTML = html || '<tr><td colspan="14" style="text-align:center;">কোনো তথ্য নেই</td></tr>';
+            document.getElementById('ledger-list').innerHTML = ledgerHtml || '<tr><td colspan="14" style="text-align:center;">কোনো চাঁদার তথ্য নেই</td></tr>';
+            document.getElementById('donation-list').innerHTML = donationHtml || '<tr><td colspan="3" style="text-align:center;">কোনো অনুদান নেই</td></tr>';
             updateBalance();
         });
 
