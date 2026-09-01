@@ -2,105 +2,160 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>UMMMAH UNITED ORGANISATION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; font-family: sans-serif; background: #05161a; min-height: 100vh; color: white; overflow-x: hidden; padding-bottom: 20px;}
-        .top-bar { background-color: #050505; color: #fff; padding: 6px 5px; font-size: 10.5px; border: 1px solid #d4af37; border-radius: 4px; margin: 4px; white-space: nowrap; overflow-x: auto; }
-        .top-bar::-webkit-scrollbar { display: none; }
-        .date-time-scroll { display: flex; align-items: center; justify-content: center; gap: 4px; }
-        .bangla-date, .time-text { color: #ffeb3b; font-weight: bold; }
-        .english-date { color: #8bc34a; font-weight: bold; }
-        .arabic-date { color: #00bcd4; font-weight: bold; }
-        .divider { color: #ffffff; margin: 0 1px; }
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; padding: 0; font-family: 'Noto Serif Bengali', sans-serif; 
+            background: #f0f2f5; 
+            color: #333; overflow-x: hidden;
+            padding-bottom: 90px; 
+        }
 
-        /* নিউজ ট্রিকার */
-        .ticker-container { display: flex; background: rgba(0,0,0,0.8); border: 1px solid #d4af37; border-radius: 4px; margin: 4px; overflow: hidden; align-items: center; position: relative; }
-        .ticker-label { background: #d4af37; color: #000; font-weight: bold; padding: 4px 10px; font-size: 11px; z-index: 10; position: relative; box-shadow: 2px 0 5px rgba(0,0,0,0.5); }
-        .ticker-wrap { flex: 1; overflow: hidden; position: relative; white-space: nowrap; }
-        .ticker-text { display: inline-block; padding-left: 100%; animation: ticker 25s linear infinite; font-size: 13px; color: #ffeb3b; font-weight: bold; }
+        /* --- টপ ডেট কার্ডস (ছোট এবং এক লাইনে) --- */
+        .date-container { display: flex; justify-content: space-between; gap: 6px; padding: 10px 15px 10px; overflow-x: auto; }
+        .date-container::-webkit-scrollbar { display: none; }
+        .date-card { 
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; 
+            padding: 6px 8px; border-radius: 8px; background: #fff; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid; white-space: nowrap;
+        }
+        .date-icon { width: 22px; height: 22px; border-radius: 6px; display: flex; justify-content: center; align-items: center; color: white; flex-shrink: 0; }
+        .date-icon svg { width: 12px; height: 12px; fill: currentColor; }
+        .date-card.green { border-color: #c8e6c9; } .date-card.green .date-icon { background: #1b5e20; }
+        .date-card.orange { border-color: #ffe0b2; } .date-card.orange .date-icon { background: #e65100; }
+        .date-card.blue { border-color: #bbdefb; } .date-card.blue .date-icon { background: #0d47a1; }
+        .date-text { font-size: 11px; font-weight: 700; color: #222; }
+
+        /* --- স্লাইডার --- */
+        .slider-wrapper { padding: 0 15px; margin-bottom: 15px; }
+        .slider-container { width: 100%; border-radius: 16px; overflow: hidden; position: relative; height: 180px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .slider-track { display: flex; transition: transform 0.5s ease-in-out; height: 100%; width: 100%; }
+        .slider-track img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; }
+        
+        /* --- নিউজ ট্রিকার --- */
+        .ticker-wrapper { padding: 0 15px; margin-bottom: 15px; }
+        .ticker-container { display: flex; background: #fff; border-radius: 30px; overflow: hidden; align-items: center; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
+        .ticker-label { background: #0f5a34; color: #fff; font-weight: bold; padding: 6px 15px; font-size: 12px; z-index: 10; border-radius: 30px; position: relative; }
+        .ticker-track { flex: 1; overflow: hidden; position: relative; white-space: nowrap; padding-left: 10px; }
+        .ticker-text { display: inline-block; padding-left: 100%; animation: ticker 25s linear infinite; font-size: 13px; color: #333; font-weight: 600; }
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-        /* ইমেজ ক্যারোজেল (স্লাইডার) */
-        .slider-container { margin: 4px; border-radius: 6px; overflow: hidden; border: 2px solid #d4af37; position: relative; height: 180px; }
-        .slider-wrapper { display: flex; transition: transform 0.6s ease-in-out; height: 100%; width: 100%; }
-        .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; }
+        /* --- ফেসবুক স্টাইল নিউজ ফিড --- */
+        .feed-container { padding: 0 15px; display: flex; flex-direction: column; gap: 15px; }
+        .post-card { background: #fff; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #e8e8e8; }
+        
+        .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .post-dp { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid #e0e0e0; }
+        .post-info { flex: 1; }
+        .post-name { font-size: 15px; font-weight: bold; color: #05161a; display: flex; align-items: center; gap: 5px; }
+        .verified-icon { width: 14px; height: 14px; fill: #1877f2; }
+        .post-time { font-size: 12px; color: #65676b; display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+        .post-options { font-size: 20px; color: #65676b; font-weight: bold; cursor: pointer; padding-bottom: 10px; }
 
-        /* বাটন গ্রুপ */
-        .button-group { display: flex; margin: 4px; gap: 4px; }
-        .btn { flex: 1; padding: 7px 4px; color: white; text-align: center; border: 1px solid #d4af37; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 3px; }
-        .btn-blue { background-color: #153e7e; }
-        .btn-red { background-color: #a81c1c; }
-        .btn-green { background-color: #1e7a1e; }
-        .btn-purple { background-color: #6a1b9a; flex: 0.3; } 
+        .post-body { font-size: 14px; line-height: 1.5; color: #1c1e21; margin-bottom: 12px; white-space: pre-wrap; }
+        .post-image { width: 100%; border-radius: 10px; object-fit: cover; max-height: 400px; border: 1px solid #eee; margin-bottom: 10px; }
+        
+        .post-stats { display: flex; justify-content: space-between; font-size: 13px; color: #65676b; padding: 5px 0 10px 0; border-bottom: 1px solid #ebedf0; margin-bottom: 10px; }
+        .reactions { display: flex; align-items: center; gap: 5px; }
+        .stat-right { display: flex; gap: 15px; }
 
-        /* সাইডবার */
-        #sidebar { position: fixed; top: 0; right: -250px; width: 220px; height: 100%; background: rgba(5, 22, 26, 0.95); backdrop-filter: blur(10px); border-left: 2px solid #d4af37; box-shadow: -5px 0 15px rgba(0,0,0,0.5); transition: right 0.3s ease; z-index: 1000; padding-top: 50px; }
-        #sidebar.open { right: 0; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #d4af37; }
-        .menu-item { display: block; padding: 15px 20px; color: white; text-decoration: none; border-bottom: 1px solid rgba(212, 175, 55, 0.3); font-size: 16px; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .menu-item:hover { background: rgba(212, 175, 55, 0.1); }
+        .post-actions { display: flex; justify-content: space-between; }
+        .action-btn { flex: 1; background: transparent; border: none; padding: 8px 0; font-size: 14px; color: #65676b; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; border-radius: 6px; transition: 0.2s; }
+        .action-btn:hover { background: #f2f2f2; }
+        .action-btn svg { width: 20px; height: 20px; fill: transparent; stroke: #65676b; stroke-width: 2; }
+
+        /* --- বটম নেভিগেশন (Bottom App Bar) --- */
+        .bottom-nav { 
+            position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; 
+            display: flex; justify-content: space-around; align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05); padding: 5px 0 10px 0; z-index: 1000; border-top: 1px solid #e0e0e0;
+        }
+        .nav-item { text-decoration: none; color: #65676b; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; flex: 1; }
+        .nav-item svg { width: 24px; height: 24px; fill: transparent; stroke: currentColor; stroke-width: 1.5; }
+        .nav-item.active { color: #0f5a34; }
+        .nav-item.active svg { fill: #0f5a34; stroke: none; }
         
-        /* পোস্ট ফিড */
-        .news-feed-container { margin: 10px 4px; }
-        .fb-post { background: linear-gradient(135deg, #05161a, #0b4533); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .post-title { font-size: 18px; color: #d4af37; font-weight: bold; margin-bottom: 8px; border-bottom: 1px dashed rgba(212,175,55,0.4); padding-bottom: 5px; }
-        .post-body { font-size: 14.5px; line-height: 1.6; color: #e0e0e0; white-space: pre-wrap; margin-bottom: 12px; }
-        .post-image { width: 100%; border-radius: 8px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1); }
-        
-        .poll-container { margin-top: 10px; }
-        .poll-option { background: rgba(0,0,0,0.4); border: 1px solid #d4af37; border-radius: 6px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
-        .poll-option:hover { background: rgba(212,175,55,0.2); }
-        .poll-text { z-index: 2; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 8px; }
-        .poll-votes { z-index: 2; font-size: 12px; color: #ffeb3b; background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 10px; }
-        
-        #custom-alert { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(10, 30, 25, 0.95); border: 2px solid #d4af37; color: white; padding: 12px 20px; border-radius: 8px; z-index: 99999; display: flex; align-items: center; gap: 10px; transition: top 0.5s; box-shadow: 0 5px 15px rgba(0,0,0,0.5); width: 80%; max-width: 300px; }
+        .nav-center { position: relative; top: -20px; }
+        .nav-fab { 
+            background: #0f5a34; width: 55px; height: 55px; border-radius: 50%; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            color: #fff; box-shadow: 0 4px 10px rgba(15, 90, 52, 0.4); border: 4px solid #f0f2f5; text-decoration: none;
+        }
+        .nav-fab svg { fill: #fff; stroke: none; width: 24px; height: 24px; }
+        .nav-fab span { font-size: 10px; font-weight: bold; margin-top: 2px; }
+
+        #custom-alert { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 20px; border-radius: 8px; z-index: 99999; display: flex; align-items: center; gap: 10px; transition: top 0.5s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         #custom-alert.show { top: 20px; }
     </style>
 </head>
 <body>
     <div id="custom-alert"><span>✨</span><span id="alert-msg" style="font-size:13px; font-weight:bold;"></span></div>
 
-    <div class="top-bar">
-        <div class="date-time-scroll">
-            <span class="bangla-date" id="bn-date">লোড হচ্ছে...</span><span class="divider">|</span>
-            <span class="english-date" id="en-date">Loading...</span><span class="divider">|</span>
-            <span class="arabic-date" id="ar-date">يتم التحميل...</span><span class="divider">|</span>
-            <span class="time-text" id="time">00:00 PM</span>
+    <!-- টপ ডেট কার্ডস (ছোট এবং এক লাইনে) -->
+    <div class="date-container">
+        <div class="date-card green">
+            <div class="date-icon"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg></div>
+            <div class="date-text" id="bn-date">লোড হচ্ছে...</div>
+        </div>
+        <div class="date-card orange">
+            <div class="date-icon"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H5V8h14v9z"/></svg></div>
+            <div class="date-text" id="ar-date">লোড হচ্ছে...</div>
+        </div>
+        <div class="date-card blue">
+            <div class="date-icon"><svg viewBox="0 0 24 24"><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg></div>
+            <div class="date-text" id="en-date">Loading...</div>
         </div>
     </div>
 
-    <!-- স্ক্রলিং নিউজ ট্রিকার -->
-    <div class="ticker-container">
-        <div class="ticker-label">আপডেট</div>
-        <div class="ticker-wrap"><div class="ticker-text" id="ticker-text">খবর লোড হচ্ছে...</div></div>
-    </div>
-
-    <!-- ইমেজ ক্যারোজেল (স্লাইডার) -->
-    <div class="slider-container">
-        <div class="slider-wrapper" id="slider-wrapper">
-            <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=800&q=80">
+    <!-- স্লাইডার -->
+    <div class="slider-wrapper">
+        <div class="slider-container">
+            <div class="slider-track" id="slider-track">
+                <img src="https://iili.io/C4w6VXR.jpg" alt="Banner">
+            </div>
         </div>
     </div>
 
-    <div class="button-group">
-        <div class="btn btn-blue">📰 নিউজ ফিড</div>
-        <a href="members.html" class="btn btn-red">👥 সদস্যবৃন্দ</a>
-        <a href="chat.html" class="btn btn-green">💬 মতামত</a>
-        <div class="btn btn-purple" onclick="toggleSidebar()">☰</div>
+    <!-- নিউজ ট্রিকার -->
+    <div class="ticker-wrapper">
+        <div class="ticker-container">
+            <div class="ticker-label">আপডেট</div>
+            <div class="ticker-track"><div class="ticker-text" id="ticker-text">খবর লোড হচ্ছে...</div></div>
+        </div>
     </div>
 
-    <!-- সাইডবার মেনু -->
-    <div id="sidebar">
-        <div class="close-btn" onclick="toggleSidebar()">✖</div>
-        <a href="user.html" class="menu-item">👤 ইউজার প্রোফাইল</a>
-        <a href="form.html" class="menu-item">📝 সদস্য ভর্তি ফরম</a>
-        <a href="fund.html" class="menu-item">💰 ফান্ড ও অনুদান</a> <!-- ফান্ড অপশনটি যুক্ত করা হলো -->
-        <a href="#" class="menu-item" onclick="logout()" style="color: #ff5252; margin-top: 20px; border-top: 1px solid rgba(255,82,82,0.3);">🚪 লগআউট</a>
+    <!-- নিউজ ফিড -->
+    <div class="feed-container" id="news-list">
+        <p style="text-align:center; color:#aaa; font-size: 13px;">পোস্ট লোড হচ্ছে...</p>
     </div>
 
-    <div class="news-feed-container" id="news-list">
-        <p style="text-align:center; color:#aaa; font-size: 12px;">পোস্ট লোড হচ্ছে...</p>
+    <!-- বটম নেভিগেশন (Bottom App Bar) -->
+    <div class="bottom-nav">
+        <a href="members.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span>ইউজার</span>
+        </a>
+        <a href="user.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+            <span>প্রোফাইল</span>
+        </a>
+        <div class="nav-center">
+            <a href="home.html" class="nav-fab">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span>হোম</span>
+            </a>
+        </div>
+        <a href="chat.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+            <span>মেসেজ</span>
+        </a>
+        <a href="fund.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>ফান্ড</span>
+        </a>
     </div>
 
     <script type="module">
@@ -114,55 +169,55 @@
 
         if(!myPhone) window.location.href = "index.html"; 
         
-        window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('open');
-        window.logout = () => { localStorage.removeItem("loggedInUser"); window.location.href = "index.html"; }
         window.showAlert = (msg) => { document.getElementById('alert-msg').innerText = msg; const a = document.getElementById('custom-alert'); a.classList.add('show'); setTimeout(()=>a.classList.remove('show'), 3000); }
 
         onSnapshot(doc(db, "settings", "ticker"), (docSnap) => {
             if (docSnap.exists()) document.getElementById('ticker-text').innerText = docSnap.data().text;
         });
 
-        // ইমেজ ক্যারোজেল লজিক
         onSnapshot(collection(db, "slider"), (snap) => {
             let html = '', count = 0;
             snap.forEach(d => { html += `<img src="${d.data().imageUrl}">`; count++; });
             if(count > 0) {
-                const wrapper = document.getElementById('slider-wrapper');
-                wrapper.innerHTML = html;
+                const track = document.getElementById('slider-track');
+                track.innerHTML = html;
                 let c = 0;
-                
                 if(window.sliderInterval) clearInterval(window.sliderInterval);
-                
                 if(count > 1) {
                     window.sliderInterval = setInterval(() => { 
                         c = (c + 1) % count; 
-                        wrapper.style.transform = `translateX(-${c * 100}%)`; 
+                        track.style.transform = `translateX(-${c * 100}%)`; 
                     }, 4000);
-                } else {
-                    wrapper.style.transform = `translateX(0%)`;
-                }
+                } else { track.style.transform = `translateX(0%)`; }
             }
         });
 
-        // নিউজ ফিড ও পোল 
+        function getRandomStats() {
+            const likes = (Math.random() * (2.5 - 0.1) + 0.1).toFixed(1) + 'K';
+            const comments = Math.floor(Math.random() * 200) + 10;
+            const shares = Math.floor(Math.random() * 100) + 5;
+            return { likes, comments, shares };
+        }
+
         const q = query(collection(db, "news"), orderBy("timestamp", "desc"));
         onSnapshot(q, (querySnapshot) => {
             let html = '';
             querySnapshot.forEach((docSnap) => {
                 const data = docSnap.data();
                 const postId = docSnap.id;
+                const stats = getRandomStats(); 
                 
                 let pollHtml = '';
                 if(data.pollOptions && data.pollOptions.length > 0) {
-                    pollHtml = '<div class="poll-container">';
+                    pollHtml = '<div style="margin-top:10px;">';
                     data.pollOptions.forEach((opt, index) => {
                         const hasVoted = data.votedBy && data.votedBy.includes(myPhone);
                         const isMyVote = data.votesDetails && data.votesDetails[myPhone] === index;
                         const tickMark = isMyVote ? '✅ ' : '🔘 ';
                         pollHtml += `
-                            <div class="poll-option" onclick="submitVote('${postId}', ${index})">
-                                <div class="poll-text">${tickMark}${opt.text}</div>
-                                <div class="poll-votes">${opt.votes} ভোট</div>
+                            <div onclick="submitVote('${postId}', ${index})" style="background:#f0f2f5; border:1px solid #ddd; padding:10px; border-radius:6px; margin-bottom:8px; display:flex; justify-content:space-between; cursor:pointer;">
+                                <div style="font-weight:bold; font-size:14px;">${tickMark}${opt.text}</div>
+                                <div style="font-size:12px; color:#555;">${opt.votes} ভোট</div>
                             </div>
                         `;
                     });
@@ -170,11 +225,45 @@
                 }
 
                 html += `
-                    <div class="fb-post">
-                        ${data.title ? `<div class="post-title">${data.title}</div>` : ''}
+                    <div class="post-card">
+                        <div class="post-header">
+                            <img src="https://iili.io/yFP7wZ6g/IMG-20260810-104450.jpg" class="post-dp" alt="Logo">
+                            <div class="post-info">
+                                <div class="post-name">
+                                    Ummah United Organisation 
+                                    <svg class="verified-icon" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                                </div>
+                                <div class="post-time">সদ্য প্রকাশিত • <span style="font-size:10px;">🌍</span></div>
+                            </div>
+                            <div class="post-options">⋮</div>
+                        </div>
+                        
                         ${data.text ? `<div class="post-body">${data.text}</div>` : ''}
                         ${data.image ? `<img src="${data.image}" class="post-image">` : ''}
                         ${pollHtml}
+                        
+                        <div class="post-stats">
+                            <div class="reactions">
+                                <span style="font-size:16px; display:flex; gap:-5px;">👍❤️😲</span> 
+                                <span>${stats.likes}</span>
+                            </div>
+                            <div class="stat-right">
+                                <span>💬 ${stats.comments}</span>
+                                <span><svg viewBox="0 0 24 24" style="width:14px;height:14px; fill:currentColor; vertical-align:middle; margin-right:3px;"><path d="M14 3v5c-7 0-10.5 4.5-12 11 2.5-3.5 6-4.5 12-4.5v5l8-8-8-8z"/></svg>${stats.shares}</span>
+                            </div>
+                        </div>
+
+                        <div class="post-actions">
+                            <button class="action-btn" onclick="showAlert('লাইক করা হয়েছে!')">
+                                <svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 1.98-1.68l1.38-9a2 2 0 0 0-2-2.32H14zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg> লাইক
+                            </button>
+                            <button class="action-btn" onclick="window.location.href='chat.html'">
+                                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg> কমেন্ট
+                            </button>
+                            <button class="action-btn" onclick="showAlert('লিংক কপি করা হয়েছে!')">
+                                <svg viewBox="0 0 24 24"><path d="M14 3v5c-7 0-10.5 4.5-12 11 2.5-3.5 6-4.5 12-4.5v5l8-8-8-8z"/></svg> শেয়ার
+                            </button>
+                        </div>
                     </div>
                 `;
             });
@@ -189,80 +278,49 @@
             if(data.votedBy && data.votedBy.includes(myPhone)) {
                 showAlert("আপনি ইতিমধ্যে ভোট দিয়েছেন!"); return;
             }
-            
-            let options = data.pollOptions;
-            options[optIndex].votes += 1;
-            
-            let votedBy = data.votedBy || [];
-            votedBy.push(myPhone);
-
-            let votesDetails = data.votesDetails || {};
-            votesDetails[myPhone] = optIndex;
-
+            let options = data.pollOptions; options[optIndex].votes += 1;
+            let votedBy = data.votedBy || []; votedBy.push(myPhone);
+            let votesDetails = data.votesDetails || {}; votesDetails[myPhone] = optIndex;
             await updateDoc(postRef, { pollOptions: options, votedBy: votedBy, votesDetails: votesDetails });
             showAlert("ভোট দেওয়ার জন্য ধন্যবাদ!");
         }
 
-        // বাংলা সংখ্যায় কনভার্ট করার ফাংশন
         function toBanglaDigits(num) {
             const digits = { '0':'০', '1':'১', '2':'২', '3':'৩', '4':'৪', '5':'৫', '6':'৬', '7':'৭', '8':'৮', '9':'৯' };
             return num.toString().replace(/\d/g, m => digits[m]);
         }
 
-        // সঠিক বাংলা ক্যালেন্ডার (বঙ্গাব্দ) লজিক
         function getBanglaDate(date) {
             const year = date.getFullYear();
             const isLeap = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
             const bMonths = ["বৈশাখ", "জ্যৈষ্ঠ", "আষাঢ়", "শ্রাবণ", "ভাদ্র", "আশ্বিন", "কার্তিক", "অগ্রহায়ণ", "পৌষ", "মাঘ", "ফাল্গুন", "চৈত্র"];
             const bDays = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, isLeap ? 30 : 29, 30];
-            
-            let bYear = year - 593;
-            let start = new Date(year, 3, 14, 0, 0, 0); 
-            
-            if (date < start) {
-                bYear -= 1;
-                start = new Date(year - 1, 3, 14, 0, 0, 0); 
-                const isPrevLeap = ((year-1) % 4 === 0 && (year-1) % 100 !== 0) || ((year-1) % 400 === 0);
-                bDays[10] = isPrevLeap ? 30 : 29;
-            }
-            
+            let bYear = year - 593; let start = new Date(year, 3, 14, 0, 0, 0); 
+            if (date < start) { bYear -= 1; start = new Date(year - 1, 3, 14, 0, 0, 0); const isPrevLeap = ((year-1) % 4 === 0 && (year-1) % 100 !== 0) || ((year-1) % 400 === 0); bDays[10] = isPrevLeap ? 30 : 29; }
             const diffDays = Math.floor((date.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-            let daysLeft = diffDays;
-            let monthIndex = 0;
-            
-            while (daysLeft >= bDays[monthIndex]) {
-                daysLeft -= bDays[monthIndex];
-                monthIndex++;
-            }
-            
+            let daysLeft = diffDays; let monthIndex = 0;
+            while (daysLeft >= bDays[monthIndex]) { daysLeft -= bDays[monthIndex]; monthIndex++; }
             return toBanglaDigits(daysLeft + 1) + " " + bMonths[monthIndex] + " " + toBanglaDigits(bYear);
         }
 
-        // হিজরি তারিখ বাংলায় কনভার্ট
         function getHijriDate(date) {
             try {
                 const formatter = new Intl.DateTimeFormat('en-US', { calendar: 'islamic-umalqura', day: 'numeric', month: 'numeric', year: 'numeric' });
                 let id, im, iy;
-                for(let p of formatter.formatToParts(date)) {
-                    if(p.type === 'day') id = p.value;
-                    if(p.type === 'month') im = p.value;
-                    if(p.type === 'year') iy = p.value;
-                }
+                for(let p of formatter.formatToParts(date)) { if(p.type === 'day') id = p.value; if(p.type === 'month') im = p.value; if(p.type === 'year') iy = p.value; }
                 const bnHijriMonths = ["মহররম", "সফর", "রবিউল আউয়াল", "রবিউস সানি", "জুমাদাল আউয়াল", "জুমাদাস সানি", "রজব", "শাবান", "রমজান", "শাওয়াল", "জিলকদ", "জিলহজ"];
                 return toBanglaDigits(id) + " " + bnHijriMonths[parseInt(im) - 1] + " " + toBanglaDigits(iy.split(" ")[0]);
-            } catch(e) { return "হিজরি ক্যালেন্ডার"; }
+            } catch(e) { return "হিজরি সন"; }
         }
 
-        // টাইম ও ডেট আপডেট
         function updateDateTime() {
             const d = new Date();
-            document.getElementById('time').innerText = d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', hour12:true}); 
-            document.getElementById('en-date').innerText = d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}); 
-            
+            // ইংরেজি তারিখ ছোট করে (যেমন: 1 Sep 2026)
+            document.getElementById('en-date').innerText = d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}); 
             document.getElementById('bn-date').innerText = getBanglaDate(d);
             document.getElementById('ar-date').innerText = getHijriDate(d);
         }
-        setInterval(updateDateTime, 1000);
+        setInterval(updateDateTime, 60000);
         updateDateTime(); 
     </script>
 </body>
