@@ -66,7 +66,8 @@
         .action-btn.reacted { color: #1877f2; }
         .action-btn.reacted svg { fill: #1877f2; stroke: #1877f2; }
 
-        .reaction-box { display: none; position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); background: white; border-radius: 30px; padding: 8px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); gap: 12px; z-index: 100; border: 1px solid #eee; }
+        /* রিয়েক্ট বক্সের পজিশন বাম পাশে স্থির করা হয়েছে যেন কেটে না যায় */
+        .reaction-box { display: none; position: absolute; bottom: 40px; left: 10px; background: white; border-radius: 30px; padding: 8px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); gap: 12px; z-index: 100; border: 1px solid #eee; }
         .reaction-icon { font-size: 24px; cursor: pointer; transition: transform 0.2s; }
         .reaction-icon:hover { transform: scale(1.3); }
 
@@ -82,7 +83,7 @@
         /* --- বটম নেভিগেশন (Bottom App Bar) --- */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: #e4e6e9; /* আলাদা হালকা ব্যাকগ্রাউন্ড */
+            background: #e4e6e9; 
             display: flex; justify-content: space-around; align-items: center;
             box-shadow: 0 -4px 10px rgba(0,0,0,0.06); padding: 5px 0 10px 0; z-index: 1000; border-top: 1px solid #ccd0d5;
         }
@@ -127,7 +128,7 @@
         <p style="text-align:center; color:#aaa; font-size: 13px;">পোস্ট লোড হচ্ছে...</p>
     </div>
 
-    <!-- বটম নেভিগেশন (হালকা ব্যাকগ্রাউন্ড সহ) -->
+    <!-- বটম নেভিগেশন -->
     <div class="bottom-nav">
         <a href="members.html" class="nav-item">
             <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -186,7 +187,7 @@
             }
         });
 
-        // লাইক চাপ দিয়ে ধরার লজিক (Long Press)
+        // লাইক চাপ দিয়ে ধরার লজিক
         let pressTimer;
         let isLongPress = false;
 
@@ -196,25 +197,22 @@
                 isLongPress = true;
                 document.querySelectorAll('.reaction-box').forEach(b => b.style.display = 'none');
                 document.getElementById(`reaction-box-${postId}`).style.display = 'flex';
-            }, 400); // ৪০০ মিলি-সেকেন্ড চাপ দিয়ে ধরলে পপআপ আসবে
+            }, 400); 
         };
 
         window.endPress = function(postId) {
             clearTimeout(pressTimer);
             if (!isLongPress) {
-                // চাপ দিয়ে না ধরে শুধু ক্লিক করলে ডিফল্ট লাইক হবে বা আনলাইক হবে
                 addReaction(postId, '👍');
             }
         };
 
-        // বাইরে ক্লিক করলে রিয়েক্ট বক্স বন্ধ হবে
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.action-wrapper')) {
                 document.querySelectorAll('.reaction-box').forEach(b => b.style.display = 'none');
             }
         });
 
-        // রিয়েক্ট যুক্ত বা রিমুভ করার ফাংশন
         window.addReaction = async function(postId, reactionType) {
             const box = document.getElementById(`reaction-box-${postId}`);
             if(box) box.style.display = 'none';
@@ -225,20 +223,18 @@
             let reactions = data.reactions || {};
 
             if (reactions[myPhone] === reactionType) {
-                delete reactions[myPhone]; // আনলাইক
+                delete reactions[myPhone]; 
             } else {
-                reactions[myPhone] = reactionType; // নতুন রিয়েক্ট
+                reactions[myPhone] = reactionType; 
             }
             await updateDoc(postRef, { reactions });
         };
 
-        // কমেন্ট বক্স টগল করা
         window.toggleComments = function(postId) {
             const section = document.getElementById(`comments-${postId}`);
             section.style.display = section.style.display === 'block' ? 'none' : 'block';
         };
 
-        // নতুন কমেন্ট যুক্ত করা
         window.addComment = async function(postId) {
             const input = document.getElementById(`comment-input-${postId}`);
             const text = input.value.trim();
@@ -254,7 +250,19 @@
             input.value = '';
         };
 
-        // নিউজ ফিড লোডার (রিয়েল ডাটা সহ)
+        // রিয়েল টাইম (কতক্ষণ আগে পোস্ট হয়েছে) বের করার ফাংশন
+        function timeAgo(ms) {
+            if (!ms) return "সদ্য প্রকাশিত";
+            const seconds = Math.floor((Date.now() - ms) / 1000);
+            if (seconds < 60) return "সদ্য প্রকাশিত";
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return toBanglaDigits(minutes) + " মিনিট আগে";
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return toBanglaDigits(hours) + " ঘণ্টা আগে";
+            const days = Math.floor(hours / 24);
+            return toBanglaDigits(days) + " দিন আগে";
+        }
+
         const q = query(collection(db, "news"), orderBy("timestamp", "desc"));
         onSnapshot(q, (querySnapshot) => {
             let html = '';
@@ -262,19 +270,17 @@
                 const data = docSnap.data();
                 const postId = docSnap.id;
                 
-                // রিয়েল এনগেজমেন্ট কাউন্ট
+                // রিয়েল এনগেজমেন্ট
                 const reactions = data.reactions || {};
                 const comments = data.comments || [];
                 const likesCount = Object.keys(reactions).length;
                 const commentsCount = comments.length;
-                const sharesCount = data.shares || 0; // শেয়ার কাউন্ট ফিচার পরে ডাটাবেসে করা যাবে
+                const sharesCount = data.shares || 0; 
 
-                // আমার নিজস্ব রিয়েক্ট চেক করা
                 const myReaction = reactions[myPhone];
                 const btnClass = myReaction ? 'action-btn reacted' : 'action-btn';
                 const btnText = myReaction ? `<span style="font-size:18px;">${myReaction}</span>` : `<svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 1.98-1.68l1.38-9a2 2 0 0 0-2-2.32H14zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg> লাইক`;
 
-                // পোল সিস্টেম
                 let pollHtml = '';
                 if(data.pollOptions && data.pollOptions.length > 0) {
                     pollHtml = '<div style="margin-top:10px;">';
@@ -292,7 +298,6 @@
                     pollHtml += '</div>';
                 }
 
-                // কমেন্ট লিস্ট HTML
                 let commentsHtml = comments.map(c => `
                     <div class="comment-item">
                         <span class="comment-name">${c.phone === myPhone ? 'আপনি' : 'সদস্য (' + c.phone.slice(-4) + ')'}</span>
@@ -309,7 +314,7 @@
                                     Ummah United Organisation 
                                     <svg class="verified-icon" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                                 </div>
-                                <div class="post-time">সদ্য প্রকাশিত • <span style="font-size:10px;">🌍</span></div>
+                                <div class="post-time">${timeAgo(data.timestamp)} • <span style="font-size:10px;">🌍</span></div>
                             </div>
                             <div class="post-options">⋮</div>
                         </div>
@@ -321,11 +326,11 @@
                         <div class="post-stats">
                             <div class="reactions">
                                 <span style="font-size:16px;">👍❤️</span> 
-                                <span>${likesCount > 0 ? likesCount : ''}</span>
+                                <span>${likesCount > 0 ? toBanglaDigits(likesCount) : ''}</span>
                             </div>
                             <div class="stat-right">
-                                <span>${commentsCount > 0 ? commentsCount + ' কমেন্ট' : ''}</span>
-                                <span>${sharesCount > 0 ? sharesCount + ' শেয়ার' : ''}</span>
+                                <span>${commentsCount > 0 ? toBanglaDigits(commentsCount) + ' কমেন্ট' : ''}</span>
+                                <span>${sharesCount > 0 ? toBanglaDigits(sharesCount) + ' শেয়ার' : ''}</span>
                             </div>
                         </div>
 
@@ -354,7 +359,6 @@
                             </div>
                         </div>
 
-                        <!-- কমেন্ট সেকশন -->
                         <div class="comments-section" id="comments-${postId}">
                             <div class="comments-list">${commentsHtml}</div>
                             <div class="comment-input-box">
@@ -368,7 +372,6 @@
             document.getElementById('news-list').innerHTML = html || '<p style="text-align:center;">কোনো আপডেট নেই</p>';
         });
 
-        // পোল সাবমিট লজিক
         window.submitVote = async function(postId, optIndex) {
             const postRef = doc(db, "news", postId);
             const snap = await getDoc(postRef);
@@ -381,7 +384,6 @@
             showAlert("ভোট দেওয়ার জন্য ধন্যবাদ!");
         }
 
-        // বাংলা ডেট ও ক্যালেন্ডার লজিক
         function toBanglaDigits(num) { const digits = { '0':'০', '1':'১', '2':'২', '3':'৩', '4':'৪', '5':'৫', '6':'৬', '7':'৭', '8':'৮', '9':'৯' }; return num.toString().replace(/\d/g, m => digits[m]); }
         function getBanglaDate(date) {
             const year = date.getFullYear(); const isLeap = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
