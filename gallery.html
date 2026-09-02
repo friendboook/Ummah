@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ফটো গ্যালারি</title>
+    <style>
+        body { margin: 0; padding: 15px; font-family: sans-serif; background: #f0f2f5; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 20px; }
+        .grid img { width: 100%; height: 150px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid #fff; }
+        .back-btn { display: inline-block; padding: 10px 20px; background: #0f5a34; color: white; border-radius: 20px; text-decoration: none; font-weight: bold; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <a href="home.html" class="back-btn">⬅ হোম</a>
+    <h2 style="color: #0f5a34; margin:0;">ফটো গ্যালারি</h2>
+    <div class="grid" id="gallery-container">লোড হচ্ছে...</div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        const db = getFirestore(initializeApp({ apiKey: "AIzaSyBOZk0sV04IXr3uLD9BlNUnndJ6LIfvHag", authDomain: "ummah-41fcf.firebaseapp.com", projectId: "ummah-41fcf" }));
+        
+        onSnapshot(query(collection(db, "gallery"), orderBy("timestamp", "desc")), (snap) => {
+            let html = ''; snap.forEach(d => html += `<img src="${d.data().url}">`);
+            document.getElementById('gallery-container').innerHTML = html || 'কোনো ছবি নেই';
+        });
+    </script>
+</body>
+</html>
