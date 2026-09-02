@@ -9,106 +9,154 @@
         * { box-sizing: border-box; }
         body { 
             margin: 0; padding: 0; font-family: 'Noto Serif Bengali', sans-serif; 
-            background: #f0f2f5; 
+            /* আধুনিক থ্রিডি ব্যাকগ্রাউন্ড গ্রেডিয়েন্ট */
+            background: linear-gradient(135deg, #e6ecef 0%, #f4f7f6 100%); 
             color: #333; overflow-x: hidden;
-            padding-bottom: 90px; 
+            padding-bottom: 100px; 
         }
 
-        /* --- টপ ডেট কার্ডস --- */
-        .date-container { display: flex; justify-content: space-between; gap: 6px; padding: 10px 15px 10px; overflow-x: auto; }
+        /* --- থ্রিডি টপ ডেট কার্ডস --- */
+        .date-container { display: flex; justify-content: space-between; gap: 8px; padding: 12px 15px; overflow-x: auto; }
         .date-container::-webkit-scrollbar { display: none; }
-        .date-card { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; padding: 6px 8px; border-radius: 8px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid; white-space: nowrap; }
-        .date-icon { width: 22px; height: 22px; border-radius: 6px; display: flex; justify-content: center; align-items: center; color: white; flex-shrink: 0; }
-        .date-icon svg { width: 12px; height: 12px; fill: currentColor; }
-        .date-card.green { border-color: #c8e6c9; } .date-card.green .date-icon { background: #1b5e20; }
-        .date-card.orange { border-color: #ffe0b2; } .date-card.orange .date-icon { background: #e65100; }
-        .date-card.blue { border-color: #bbdefb; } .date-card.blue .date-icon { background: #0d47a1; }
+        .date-card { 
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; 
+            padding: 8px 10px; border-radius: 12px; background: #fff; 
+            /* থ্রিডি কার্ড শ্যাডো */
+            box-shadow: 0 6px 12px rgba(0,0,0,0.06), inset 0 2px 0 rgba(255,255,255,0.8); 
+            border: 1px solid rgba(255,255,255,0.5); white-space: nowrap;
+            transition: transform 0.3s;
+        }
+        .date-card:active { transform: scale(0.95); }
+        .date-icon { 
+            width: 26px; height: 26px; border-radius: 8px; display: flex; justify-content: center; 
+            align-items: center; color: white; flex-shrink: 0; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+        }
+        .date-icon svg { width: 14px; height: 14px; fill: currentColor; }
+        
+        /* কালারফুল গ্রেডিয়েন্ট আইকন */
+        .date-card.green .date-icon { background: linear-gradient(135deg, #2e7d32, #0f5a34); }
+        .date-card.orange .date-icon { background: linear-gradient(135deg, #f57c00, #e65100); }
+        .date-card.blue .date-icon { background: linear-gradient(135deg, #1976d2, #0d47a1); }
         .date-text { font-size: 11px; font-weight: 700; color: #222; }
 
-        /* --- স্লাইডার ও ট্রিকার --- */
+        /* --- স্লাইডার --- */
         .slider-wrapper { padding: 0 15px; margin-bottom: 15px; }
-        .slider-container { width: 100%; border-radius: 16px; overflow: hidden; position: relative; height: 180px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .slider-container { 
+            width: 100%; border-radius: 18px; overflow: hidden; position: relative; height: 180px; 
+            box-shadow: 0 10px 25px rgba(15, 90, 52, 0.2); border: 2px solid #fff; 
+        }
         .slider-track { display: flex; transition: transform 0.5s ease-in-out; height: 100%; width: 100%; }
         .slider-track img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; }
         
-        .ticker-wrapper { padding: 0 15px; margin-bottom: 15px; }
-        .ticker-container { display: flex; background: #fff; border-radius: 30px; overflow: hidden; align-items: center; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
-        .ticker-label { background: #0f5a34; color: #fff; font-weight: bold; padding: 6px 15px; font-size: 12px; z-index: 10; border-radius: 30px; position: relative; }
+        /* --- থ্রিডি নিউজ ট্রিকার --- */
+        .ticker-wrapper { padding: 0 15px; margin-bottom: 20px; }
+        .ticker-container { 
+            display: flex; background: linear-gradient(90deg, #ffffff, #f0f4f2); 
+            border-radius: 30px; overflow: hidden; align-items: center; position: relative; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05), inset 0 2px 4px rgba(255,255,255,0.8); 
+            border: 1px solid #dcdcdc; 
+        }
+        .ticker-label { 
+            background: linear-gradient(135deg, #1a8f54, #0f5a34); color: #fff; font-weight: bold; 
+            padding: 8px 18px; font-size: 12px; z-index: 10; border-radius: 30px; position: relative; 
+            box-shadow: 2px 0 10px rgba(15, 90, 52, 0.4); text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
         .ticker-track { flex: 1; overflow: hidden; position: relative; white-space: nowrap; padding-left: 10px; }
-        .ticker-text { display: inline-block; padding-left: 100%; animation: ticker 25s linear infinite; font-size: 13px; color: #333; font-weight: 600; }
+        .ticker-text { display: inline-block; padding-left: 100%; animation: ticker 25s linear infinite; font-size: 14px; color: #111; font-weight: 700; }
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-        /* --- ফেসবুক স্টাইল নিউজ ফিড --- */
-        .feed-container { padding: 0 15px; display: flex; flex-direction: column; gap: 15px; }
-        .post-card { background: #fff; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #e8e8e8; }
+        /* --- থ্রিডি নিউজ ফিড কার্ড --- */
+        .feed-container { padding: 0 15px; display: flex; flex-direction: column; gap: 20px; }
+        .post-card { 
+            background: #fff; border-radius: 16px; padding: 18px; 
+            /* সফট থ্রিডি শ্যাডো */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05), 0 2px 5px rgba(0,0,0,0.02); 
+            border-top: 4px solid #0f5a34; position: relative; overflow: hidden;
+        }
+        .post-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50px;
+            background: linear-gradient(180deg, rgba(15,90,52,0.03) 0%, rgba(255,255,255,0) 100%); pointer-events: none;
+        }
         
-        .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-        .post-dp { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid #e0e0e0; }
+        .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; position: relative; z-index: 2; }
+        .post-dp { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
         .post-info { flex: 1; }
-        .post-name { font-size: 15px; font-weight: bold; color: #05161a; display: flex; align-items: center; gap: 5px; }
-        .verified-icon { width: 14px; height: 14px; fill: #1877f2; }
-        .post-time { font-size: 12px; color: #65676b; display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+        .post-name { font-size: 15px; font-weight: bold; color: #000; display: flex; align-items: center; gap: 5px; }
+        .verified-icon { width: 16px; height: 16px; fill: #1877f2; }
+        .post-time { font-size: 12px; color: #65676b; display: flex; align-items: center; gap: 4px; margin-top: 2px; font-weight: 600; }
+        .post-options { font-size: 20px; color: #65676b; font-weight: bold; cursor: pointer; padding-bottom: 10px; }
 
-        .post-body { font-size: 14px; line-height: 1.5; color: #1c1e21; margin-bottom: 12px; white-space: pre-wrap; }
-        .post-image { width: 100%; border-radius: 10px; object-fit: cover; max-height: 400px; border: 1px solid #eee; margin-bottom: 10px; }
+        .post-body { font-size: 14.5px; line-height: 1.6; color: #1c1e21; margin-bottom: 12px; white-space: pre-wrap; z-index: 2; position: relative; }
+        .post-image { width: 100%; border-radius: 12px; object-fit: cover; max-height: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 15px; }
         
-        .post-stats { display: flex; justify-content: space-between; font-size: 13px; color: #65676b; padding: 5px 0 10px 0; border-bottom: 1px solid #ebedf0; margin-bottom: 5px; }
+        .post-stats { display: flex; justify-content: space-between; font-size: 13px; color: #65676b; padding: 5px 0 10px 0; border-bottom: 1px solid #ebedf0; margin-bottom: 8px; font-weight: bold; }
         .reactions { display: flex; align-items: center; gap: 5px; }
         .stat-right { display: flex; gap: 15px; }
 
-        /* একশন বাটন এবং রিয়েক্ট পপআপ */
         .post-actions { display: flex; justify-content: space-between; position: relative; }
         .action-wrapper { position: relative; flex: 1; display: flex; justify-content: center; }
         
-        .action-btn { background: transparent; border: none; padding: 8px 0; font-size: 14px; color: #65676b; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; border-radius: 6px; transition: 0.2s; width: 100%; user-select: none; -webkit-user-select: none; }
-        .action-btn:active { background: #f2f2f2; }
-        .action-btn svg { width: 20px; height: 20px; fill: transparent; stroke: currentColor; stroke-width: 2; }
+        .action-btn { 
+            background: transparent; border: none; padding: 10px 0; font-size: 14px; color: #555; 
+            font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; 
+            cursor: pointer; border-radius: 8px; transition: 0.3s; width: 100%; user-select: none; -webkit-user-select: none; 
+        }
+        .action-btn:active { background: #f0f2f5; transform: scale(0.95); }
+        .action-btn svg { width: 22px; height: 22px; fill: transparent; stroke: currentColor; stroke-width: 2.5; }
         .action-btn.reacted { color: #1877f2; }
         .action-btn.reacted svg { fill: #1877f2; stroke: #1877f2; }
 
-        /* রিয়েক্ট বক্সের পজিশন বাম পাশে স্থির করা হয়েছে যেন কেটে না যায় */
-        .reaction-box { display: none; position: absolute; bottom: 40px; left: 10px; background: white; border-radius: 30px; padding: 8px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); gap: 12px; z-index: 100; border: 1px solid #eee; }
-        .reaction-icon { font-size: 24px; cursor: pointer; transition: transform 0.2s; }
-        .reaction-icon:hover { transform: scale(1.3); }
+        .reaction-box { 
+            display: none; position: absolute; bottom: 50px; left: 10px; 
+            background: #fff; border-radius: 30px; padding: 8px 15px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); gap: 15px; z-index: 100; border: 1px solid #e0e0e0;
+            animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popUp { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .reaction-icon { font-size: 28px; cursor: pointer; transition: transform 0.2s; }
+        .reaction-icon:hover { transform: scale(1.3) translateY(-5px); }
 
         /* কমেন্ট সেকশন */
-        .comments-section { display: none; margin-top: 10px; border-top: 1px solid #eee; padding-top: 15px; }
-        .comments-list { display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto; margin-bottom: 10px; }
-        .comment-item { display: flex; flex-direction: column; background: #f0f2f5; padding: 8px 12px; border-radius: 15px; width: fit-content; max-width: 90%; font-size: 13px; color: #1c1e21; }
-        .comment-name { font-weight: bold; font-size: 12px; color: #05161a; margin-bottom: 2px; }
+        .comments-section { display: none; margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
+        .comments-list { display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto; margin-bottom: 15px; }
+        .comment-item { display: flex; flex-direction: column; background: #f0f4f8; padding: 10px 15px; border-radius: 18px; width: fit-content; max-width: 90%; font-size: 13px; color: #111; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .comment-name { font-weight: bold; font-size: 12px; color: #0f5a34; margin-bottom: 3px; }
         .comment-input-box { display: flex; gap: 10px; align-items: center; }
-        .comment-input-box input { flex: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid #ccc; outline: none; background: #f0f2f5; font-family: inherit; }
-        .comment-input-box button { background: #0f5a34; color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .comment-input-box input { flex: 1; padding: 12px 18px; border-radius: 25px; border: 1px solid #ccc; outline: none; background: #fff; font-family: inherit; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        .comment-input-box button { background: linear-gradient(135deg, #1a8f54, #0f5a34); color: white; border: none; padding: 10px 18px; border-radius: 25px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(15, 90, 52, 0.3); }
 
-        /* --- বটম নেভিগেশন (Bottom App Bar) --- */
+        /* --- কালারফুল থ্রিডি বটম নেভিগেশন --- */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: #e4e6e9; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px);
             display: flex; justify-content: space-around; align-items: center;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.06); padding: 5px 0 10px 0; z-index: 1000; border-top: 1px solid #ccd0d5;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.08); padding: 5px 0 10px 0; z-index: 1000; border-top: 1px solid rgba(0,0,0,0.05);
         }
-        .nav-item { text-decoration: none; color: #65676b; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; flex: 1; }
-        .nav-item svg { width: 24px; height: 24px; fill: transparent; stroke: currentColor; stroke-width: 1.5; }
+        .nav-item { text-decoration: none; color: #777; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; flex: 1; transition: 0.3s; }
+        .nav-item svg { width: 24px; height: 24px; fill: transparent; stroke: currentColor; stroke-width: 2; transition: 0.3s; }
         .nav-item.active { color: #0f5a34; }
-        .nav-item.active svg { fill: #0f5a34; stroke: none; }
+        .nav-item.active svg { fill: #0f5a34; stroke: none; transform: scale(1.1); }
         
-        .nav-center { position: relative; top: -20px; }
+        .nav-center { position: relative; top: -25px; }
         .nav-fab { 
-            background: #0f5a34; width: 55px; height: 55px; border-radius: 50%; 
+            background: linear-gradient(135deg, #1c9e5e, #0f5a34); width: 60px; height: 60px; border-radius: 50%; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            color: #fff; box-shadow: 0 4px 10px rgba(15, 90, 52, 0.4); border: 4px solid #e4e6e9; text-decoration: none;
+            color: #fff; box-shadow: 0 8px 20px rgba(15, 90, 52, 0.4), inset 0 2px 5px rgba(255,255,255,0.4); 
+            border: 4px solid #f0f2f5; text-decoration: none; transition: transform 0.3s;
         }
-        .nav-fab svg { fill: #fff; stroke: none; width: 24px; height: 24px; }
-        .nav-fab span { font-size: 10px; font-weight: bold; margin-top: 2px; }
+        .nav-fab:active { transform: scale(0.95); }
+        .nav-fab svg { fill: #fff; stroke: none; width: 26px; height: 26px; drop-shadow: 0 2px 2px rgba(0,0,0,0.3); }
+        .nav-fab span { font-size: 10px; font-weight: bold; margin-top: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
 
-        #custom-alert { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 20px; border-radius: 8px; z-index: 99999; display: flex; align-items: center; gap: 10px; transition: top 0.5s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        #custom-alert.show { top: 20px; }
+        #custom-alert { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #222; color: #fff; padding: 12px 20px; border-radius: 10px; z-index: 99999; display: flex; align-items: center; gap: 10px; transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 1px solid #444; }
+        #custom-alert.show { top: 30px; }
     </style>
 </head>
 <body>
     <div id="custom-alert"><span>✨</span><span id="alert-msg" style="font-size:13px; font-weight:bold;"></span></div>
 
-    <!-- টপ ডেট কার্ডস -->
+    <!-- থ্রিডি টপ ডেট কার্ডস -->
     <div class="date-container">
         <div class="date-card green"><div class="date-icon"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg></div><div class="date-text" id="bn-date">লোড হচ্ছে...</div></div>
         <div class="date-card orange"><div class="date-icon"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H5V8h14v9z"/></svg></div><div class="date-text" id="ar-date">লোড হচ্ছে...</div></div>
@@ -125,10 +173,10 @@
 
     <!-- নিউজ ফিড -->
     <div class="feed-container" id="news-list">
-        <p style="text-align:center; color:#aaa; font-size: 13px;">পোস্ট লোড হচ্ছে...</p>
+        <p style="text-align:center; color:#aaa; font-size: 14px; font-weight:bold;">পোস্ট লোড হচ্ছে...</p>
     </div>
 
-    <!-- বটম নেভিগেশন -->
+    <!-- কালারফুল থ্রিডি বটম নেভিগেশন -->
     <div class="bottom-nav">
         <a href="members.html" class="nav-item">
             <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -187,7 +235,6 @@
             }
         });
 
-        // লাইক চাপ দিয়ে ধরার লজিক
         let pressTimer;
         let isLongPress = false;
 
@@ -250,7 +297,6 @@
             input.value = '';
         };
 
-        // রিয়েল টাইম (কতক্ষণ আগে পোস্ট হয়েছে) বের করার ফাংশন
         function timeAgo(ms) {
             if (!ms) return "সদ্য প্রকাশিত";
             const seconds = Math.floor((Date.now() - ms) / 1000);
@@ -270,7 +316,6 @@
                 const data = docSnap.data();
                 const postId = docSnap.id;
                 
-                // রিয়েল এনগেজমেন্ট
                 const reactions = data.reactions || {};
                 const comments = data.comments || [];
                 const likesCount = Object.keys(reactions).length;
@@ -289,9 +334,9 @@
                         const isMyVote = data.votesDetails && data.votesDetails[myPhone] === index;
                         const tickMark = isMyVote ? '✅ ' : '🔘 ';
                         pollHtml += `
-                            <div onclick="submitVote('${postId}', ${index})" style="background:#f0f2f5; border:1px solid #ddd; padding:10px; border-radius:6px; margin-bottom:8px; display:flex; justify-content:space-between; cursor:pointer;">
-                                <div style="font-weight:bold; font-size:14px;">${tickMark}${opt.text}</div>
-                                <div style="font-size:12px; color:#555;">${opt.votes} ভোট</div>
+                            <div onclick="submitVote('${postId}', ${index})" style="background:linear-gradient(90deg, #f8f9fa, #fff); border:1px solid #ddd; padding:12px; border-radius:10px; margin-bottom:10px; display:flex; justify-content:space-between; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.02);">
+                                <div style="font-weight:bold; font-size:14px; color:#111;">${tickMark}${opt.text}</div>
+                                <div style="font-size:12px; color:#555; background:#eee; padding:2px 8px; border-radius:10px;">${toBanglaDigits(opt.votes)} ভোট</div>
                             </div>
                         `;
                     });
