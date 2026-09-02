@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>অডিও বুক</title>
+<style>body{margin:0;padding:15px;font-family:sans-serif;background:#f0f2f5;} .card{background:#fff;padding:15px;border-radius:12px;margin-bottom:15px;box-shadow:0 4px 10px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;} .btn{background:#4a00e0;color:white;padding:8px 15px;text-decoration:none;border-radius:6px;font-weight:bold;font-size:13px;}</style></head>
+<body>
+    <a href="home.html" style="display:inline-block; margin-bottom:15px; color:#4a00e0; font-weight:bold; text-decoration:none;">⬅ হোম</a>
+    <h2 style="color:#4a00e0; margin-top:0;">🎧 অডিও বুক</h2>
+    <div id="list">লোড হচ্ছে...</div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        const db = getFirestore(initializeApp({ apiKey: "AIzaSyBOZk0sV04IXr3uLD9BlNUnndJ6LIfvHag", authDomain: "ummah-41fcf.firebaseapp.com", projectId: "ummah-41fcf" }));
+        onSnapshot(query(collection(db, "audios"), orderBy("timestamp", "desc")), (snap) => {
+            let html = ''; snap.forEach(d => html += `<div class="card"><strong>${d.data().title}</strong> <a href="${d.data().link}" class="btn" target="_blank">শুনুন</a></div>`);
+            document.getElementById('list').innerHTML = html || 'কোনো অডিও নেই';
+        });
+    </script>
+</body></html>
