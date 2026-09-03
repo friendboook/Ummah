@@ -53,26 +53,17 @@
         import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         
         const db = getFirestore(initializeApp({ apiKey: "AIzaSyBOZk0sV04IXr3uLD9BlNUnndJ6LIfvHag", authDomain: "ummah-41fcf.firebaseapp.com", projectId: "ummah-41fcf" }));
-        
-        // ড্রাইভ লিংক কনভার্ট করার ফাংশন
-        function getDirectLink(url) {
-            let id = "";
-            const match1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-            const match2 = url.match(/id=([a-zA-Z0-9_-]+)/);
-            if (match1) id = match1[1]; else if (match2) id = match2[1];
-            return id ? `https://drive.google.com/uc?export=download&id=${id}` : url;
-        }
 
         onSnapshot(query(collection(db, "audios"), orderBy("timestamp", "desc")), (snap) => {
             let html = ''; 
             snap.forEach(d => {
-                const directUrl = getDirectLink(d.data().link);
                 html += `
                 <div class="card">
                     <h4>${d.data().title}</h4>
                     <audio controls controlsList="nodownload">
-                        <source src="${directUrl}" type="audio/mp3">
-                        <source src="${directUrl}" type="audio/mpeg">
+                        <source src="${d.data().link}" type="audio/mp3">
+                        <source src="${d.data().link}" type="audio/wav">
+                        <source src="${d.data().link}" type="audio/mpeg">
                         আপনার ব্রাউজার অডিও সাপোর্ট করে না।
                     </audio>
                 </div>`;
