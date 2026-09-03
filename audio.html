@@ -1,17 +1,84 @@
 <!DOCTYPE html>
-<html lang="bn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>অডিও বুক</title>
-<style>body{margin:0;padding:15px;font-family:sans-serif;background:#f0f2f5;} .card{background:#fff;padding:15px;border-radius:12px;margin-bottom:15px;box-shadow:0 4px 10px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;} .btn{background:#4a00e0;color:white;padding:8px 15px;text-decoration:none;border-radius:6px;font-weight:bold;font-size:13px;}</style></head>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অডিও বুক - UMMMAH UNITED</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #e4e9f0 0%, #f7f9fb 100%); 
+            color: #222; padding-bottom: 30px; 
+        }
+        .header { 
+            background: linear-gradient(135deg, #4a00e0, #8e2de2); 
+            padding: 25px 20px; text-align: center; 
+            box-shadow: 0 5px 20px rgba(74, 0, 224, 0.4); 
+            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+        }
+        .header h2 { margin: 0; color: #fff; font-size: 24px; text-shadow: 1px 2px 5px rgba(0,0,0,0.3); }
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        
+        .card { 
+            background: #ffffff; padding: 20px; border-radius: 16px; margin-bottom: 20px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06), inset 0 2px 0 rgba(255,255,255,1); 
+            border: 1px solid rgba(74, 0, 224, 0.1); text-align: center; transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
+        .card h4 { margin: 0 0 15px 0; color: #333; font-size: 16px; font-weight: bold; }
+        
+        /* কাস্টম অডিও প্লেয়ার ডিজাইন */
+        audio { width: 100%; border-radius: 10px; outline: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        audio::-webkit-media-controls-panel { background: #f0f2f5; }
+
+        .back-btn { 
+            display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffffff; 
+            background: linear-gradient(135deg, #1e293b, #0f172a); padding: 12px 25px; 
+            border-radius: 30px; width: max-content; margin: 0 auto 20px auto; text-decoration: none; 
+            font-weight: bold; font-size: 15px; box-shadow: 0 5px 15px rgba(15, 23, 42, 0.3); 
+        }
+    </style>
+</head>
 <body>
-    <a href="home.html" style="display:inline-block; margin-bottom:15px; color:#4a00e0; font-weight:bold; text-decoration:none;">⬅ হোম</a>
-    <h2 style="color:#4a00e0; margin-top:0;">🎧 অডিও বুক</h2>
-    <div id="list">লোড হচ্ছে...</div>
+    <div class="header"><h2>🎧 অডিও বুক</h2></div>
+    
+    <div class="container">
+        <a href="home.html" class="back-btn">⬅ হোমে ফিরে যান</a>
+        <div id="list" style="text-align: center; color: #777; font-weight: bold; margin-top:20px;">অডিও লোড হচ্ছে...</div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        
         const db = getFirestore(initializeApp({ apiKey: "AIzaSyBOZk0sV04IXr3uLD9BlNUnndJ6LIfvHag", authDomain: "ummah-41fcf.firebaseapp.com", projectId: "ummah-41fcf" }));
+        
+        // ড্রাইভ লিংক কনভার্ট করার ফাংশন
+        function getDirectLink(url) {
+            let id = "";
+            const match1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+            const match2 = url.match(/id=([a-zA-Z0-9_-]+)/);
+            if (match1) id = match1[1]; else if (match2) id = match2[1];
+            return id ? `https://drive.google.com/uc?export=download&id=${id}` : url;
+        }
+
         onSnapshot(query(collection(db, "audios"), orderBy("timestamp", "desc")), (snap) => {
-            let html = ''; snap.forEach(d => html += `<div class="card"><strong>${d.data().title}</strong> <a href="${d.data().link}" class="btn" target="_blank">শুনুন</a></div>`);
+            let html = ''; 
+            snap.forEach(d => {
+                const directUrl = getDirectLink(d.data().link);
+                html += `
+                <div class="card">
+                    <h4>${d.data().title}</h4>
+                    <audio controls controlsList="nodownload">
+                        <source src="${directUrl}" type="audio/mp3">
+                        <source src="${directUrl}" type="audio/mpeg">
+                        আপনার ব্রাউজার অডিও সাপোর্ট করে না।
+                    </audio>
+                </div>`;
+            });
             document.getElementById('list').innerHTML = html || 'কোনো অডিও নেই';
         });
     </script>
-</body></html>
+</body>
+</html>
