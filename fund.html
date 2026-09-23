@@ -15,51 +15,76 @@
         
         /* --- ফুল স্ক্রিন ইমেজ হেডার --- */
         .header-image-only { 
-            width: 100%; 
-            margin: 0 0 25px 0; 
-            padding: 0; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            width: 100%; margin: 0 0 25px 0; padding: 0; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
         .header-image-only img { 
-            width: 100%; 
-            display: block; 
-            object-fit: cover;
+            width: 100%; display: block; object-fit: cover;
         }
         
         .container { max-width: 1000px; margin: 0 auto; padding: 0 15px; }
 
-        /* --- 3D পেমেন্ট ইনফো সেকশন --- */
-        .payment-info { 
-            background: #ffffff; padding: 30px 20px; border-radius: 20px; text-align: center; margin-bottom: 35px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.06), inset 0 2px 0 rgba(255,255,255,1); 
-            border: 1px solid rgba(212, 175, 55, 0.3);
+        /* --- 3D পেমেন্ট সেকশন --- */
+        .payment-section {
+            background: #ffffff; padding: 30px 15px; border-radius: 20px; text-align: center; margin-bottom: 35px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.06); border: 1px solid #e2e8f0;
         }
-        .payment-info h3 { margin: 0 0 15px 0; color: #0a3622; font-size: 24px; font-weight: 900; text-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        .payment-info p { margin: 8px 0; font-size: 16px; color: #333; line-height: 1.6; font-weight: 600; }
-        .payment-info .highlight-text { color: #d32f2f; font-weight: 800; margin-top: 15px; font-size: 17px; }
+        .pay-title {
+            background: linear-gradient(to bottom, #004d26, #002b15); color: #ffffff; display: inline-block;
+            padding: 10px 30px; border-radius: 50px; font-size: 26px; font-weight: 900; border: 2px solid #ffd700;
+            box-shadow: 0 6px 15px rgba(0, 50, 25, 0.4), inset 0 2px 6px rgba(255, 255, 255, 0.3); margin-bottom: 18px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5); letter-spacing: 1px;
+        }
+        .pay-title span { color: #ffd700; }
         
-        /* 3D নাম্বার বক্স */
-        .number-box-3d {
-            display: flex; justify-content: space-between; align-items: center; 
-            background: #ffffff; padding: 8px 8px 8px 25px; border-radius: 50px;
-            box-shadow: 0 8px 20px rgba(0, 91, 234, 0.15), inset 0 -3px 6px rgba(0,0,0,0.05);
-            border: 3px solid #005bea; max-width: 400px; margin: 20px auto;
+        /* ডেসক্রিপশন গুছিয়ে লেখা */
+        .pay-desc { 
+            font-size: 16px; color: #222; line-height: 1.6; font-weight: 600; 
+            margin: 0 auto 18px auto; max-width: 90%; 
         }
-        .the-number { font-size: 28px; font-weight: 900; color: #111; letter-spacing: 1px; }
+        .pay-desc-green { color: #00732e; font-weight: 800; }
         
-        /* থ্রিডি কপি বাটন */
-        .btn-copy { 
-            background: linear-gradient(to bottom, #3b82f6, #1d4ed8); color: #fff; 
-            border: none; padding: 12px 25px; border-radius: 40px; font-size: 15px; font-weight: 800; 
-            cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; 
-            box-shadow: 0 4px 10px rgba(29, 78, 216, 0.4), inset 0 2px 4px rgba(255,255,255,0.3); 
+        .pay-warning {
+            background: linear-gradient(to bottom, #fffbed, #ffedd5); border: 2px solid #fbbf24;
+            padding: 12px; border-radius: 12px; color: #111; font-weight: 800; font-size: 16px;
+            margin: 0 auto 30px auto; max-width: 550px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
-        .btn-copy:active { transform: scale(0.95); box-shadow: 0 2px 5px rgba(29, 78, 216, 0.4); }
+        .pay-warning span { color: #dc2626; }
 
-        /* পেমেন্ট লোগো */
-        .payment-logos { max-width: 280px; width: 100%; margin-top: 5px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+        .blue-3d-wrapper {
+            background: linear-gradient(to bottom, #007bff, #003399); padding: 6px; border-radius: 50px;
+            max-width: 480px; margin: 0 auto; position: relative;
+            box-shadow: 0 10px 25px rgba(0, 51, 153, 0.3), inset 0 2px 6px rgba(255,255,255,0.4);
+        }
+        .blue-3d-badge {
+            position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(to bottom, #0056b3, #002266); color: #ffffff;
+            padding: 4px 22px; border-radius: 20px; font-size: 14px; font-weight: bold;
+            border: 2px solid #3399ff; box-shadow: 0 4px 10px rgba(0,0,0,0.4); letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        .blue-3d-inner {
+            background: #ffffff; border-radius: 45px; display: flex; justify-content: space-between;
+            align-items: center; padding: 8px 10px 8px 25px; box-shadow: inset 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .blue-3d-number {
+            font-size: 30px; font-weight: 900; color: #111; letter-spacing: 2px;
+            font-family: Impact, 'Arial Black', sans-serif; margin-right: 10px;
+        }
+        
+        /* 3D কপি বাটন - ছোট করা হয়েছে */
+        .blue-3d-btn {
+            background: linear-gradient(to bottom, #3399ff, #0056b3); color: #ffffff; border: 2px solid #99ccff;
+            padding: 6px 16px; border-radius: 25px; font-size: 14px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; gap: 6px; transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.5); text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+            white-space: nowrap;
+        }
+        .blue-3d-btn svg { width: 16px; height: 16px; }
+        .blue-3d-btn:active { transform: scale(0.95); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        
+        .payment-logos { max-width: 380px; width: 100%; margin-top: 25px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.15)); }
 
-        /* --- 3D কালারফুল সামারি কার্ডস --- */
+        /* --- 3D সামারি কার্ডস --- */
         .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 35px; }
         .summary-card { 
             padding: 25px 20px; border-radius: 16px; text-align: center; 
@@ -93,53 +118,57 @@
             border-radius: 8px; font-size: 15px; font-weight: bold; outline: none; cursor: pointer; 
             box-shadow: 0 5px 15px rgba(10, 54, 34, 0.3); transition: 0.2s;
         }
-        .year-filter:active { transform: scale(0.95); }
 
-        .table-wrapper { 
-            width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; 
-        }
-        .table-wrapper::-webkit-scrollbar { height: 8px; }
+        /* --- টেবিলের স্ক্রলিং --- */
+        .table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .ledger-wrapper { max-height: 550px; overflow-y: auto; }
+        
+        .table-wrapper::-webkit-scrollbar { width: 6px; height: 8px; }
         .table-wrapper::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
         
-        table { width: 100%; border-collapse: collapse; }
-        
+        table { width: 100%; border-collapse: separate; border-spacing: 0; }
         .ledger-table { min-width: 950px; }
         .normal-table { min-width: 100%; table-layout: auto; }
 
-        th, td { padding: 15px 12px; text-align: center; font-size: 14.5px; border: 1px solid #e2e8f0; }
+        th, td { padding: 15px 12px; text-align: center; font-size: 14.5px; border-bottom: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; }
         
-        th { background: linear-gradient(135deg, #0a3622, #145a3a); color: #ffffff; font-weight: 700; text-transform: uppercase; font-size: 13px; border-color: #062316; }
+        th { 
+            background: linear-gradient(135deg, #0a3622, #145a3a); color: #ffffff; font-weight: 700; 
+            text-transform: uppercase; font-size: 13px; position: sticky; top: 0; z-index: 10;
+        }
         
         tr:nth-child(even) td { background: #f8fafc; }
         tr:hover td { background: #f1f5f9; }
         
-        /* স্টিকি নাম কলাম */
         .sticky-col { 
-            position: sticky; left: 0; background: #ffffff; z-index: 2; 
-            border-right: 3px solid #d4af37 !important; font-weight: 800; color: #0a3622; text-align: left; 
-            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+            position: sticky; left: 0; background: #ffffff; z-index: 11; 
+            border-right: 3px solid #0a3622 !important; font-weight: 800; color: #0a3622; text-align: left; 
+            box-shadow: 3px 0 8px rgba(0,0,0,0.08); 
         }
-        th.sticky-col { background: #062316; color: #f4d160; z-index: 3; }
+        th.sticky-col { background: #062316; color: #f4d160; z-index: 15; border-right: 3px solid #0a3622 !important; }
         tr:nth-child(even) td.sticky-col { background: #f8fafc; }
         
         .ledger-table td:last-child { background: #e8f5e9 !important; color: #0a3622; font-weight: 900; font-size: 16px; border-left: 3px solid #10b981; }
         
         .paid-amount { 
             background: linear-gradient(135deg, #10b981, #059669); color: #ffffff; padding: 6px 14px; 
-            border-radius: 8px; font-weight: 800; font-size: 14px; 
-            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4); display: inline-block; min-width: 50px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            border-radius: 8px; font-weight: 800; font-size: 14px; display: inline-block; min-width: 50px;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4); text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
         .cross-mark { color: #cbd5e1; font-size: 16px; font-weight: bold; }
 
         @media (max-width: 768px) {
             .table-section { 
-                margin-left: -15px; margin-right: -15px; border-radius: 0; 
-                border-left: none; border-right: none; box-shadow: none; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
+                margin-left: -15px; margin-right: -15px; border-radius: 0; border-left: none; border-right: none; 
+                box-shadow: none; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
             }
-            .number-box-3d { padding: 6px 6px 6px 15px; }
-            .the-number { font-size: 24px; }
-            .btn-copy { padding: 10px 18px; font-size: 14px; }
+            .pay-desc { font-size: 15px; max-width: 100%; }
+            .blue-3d-inner { padding: 6px 8px 6px 15px; }
+            .blue-3d-number { font-size: 24px; }
+            .blue-3d-btn { padding: 5px 12px; font-size: 13px; border-radius: 20px; }
+            .pay-title { font-size: 22px; padding: 8px 20px; }
+            .pay-warning { font-size: 15px; }
+            .ledger-wrapper { max-height: 480px; } 
         }
 
         /* --- 3D ব্যাক বাটন --- */
@@ -152,13 +181,21 @@
         .back-btn:active { transform: scale(0.95); box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2); }
 
         /* --- কাস্টম এলার্ট --- */
-        #custom-alert { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 14px 25px; border-radius: 12px; z-index: 99999; display: flex; align-items: center; gap: 10px; transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 1px solid #334155; }
+        #custom-alert { 
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%); 
+            background: #1e293b; color: white; padding: 15px 25px; border-radius: 10px; 
+            z-index: 99999; display: flex; align-items: center; justify-content: center; text-align: center;
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 1px solid #334155; 
+            font-size: 15px; font-weight: bold;
+        }
         #custom-alert.show { top: 25px; }
     </style>
 </head>
 <body>
 
-    <div id="custom-alert"><span>✨</span><span id="alert-msg" style="font-size:14px; font-weight:bold;"></span></div>
+    <!-- পপ-আপ মেসেজ (ইমোজি ছাড়া) -->
+    <div id="custom-alert"><span id="alert-msg"></span></div>
 
     <!-- ফুল-স্ক্রিন ইমেজ হেডার -->
     <div class="header-image-only">
@@ -167,21 +204,32 @@
 
     <div class="container">
         
-        <!-- পেমেন্ট ইনফরমেশন (টেক্সট + 3D নাম্বার বক্স + লোগো) -->
-        <div class="payment-info">
-            <h3>সম্মানিত সদস্যবৃন্দ</h3>
-            <p>আমাদের সংগঠনের মাসিক চাঁদা এবং অনুদানের ক্ষেত্রে কোনো নির্দিষ্ট লিমিট নেই।</p>
-            <p>যে কেউ তার সামর্থ্য ও ইচ্ছেমতো যেকোনো পরিমাণ অর্থ ডোনেট করতে পারবেন।</p>
-            <p class="highlight-text">চাঁদা বা অনুদান পাঠাতে ক্যাশিয়ারের এই নাম্বারে শুধুমাত্র সেন্ড মানি করুন:</p>
+        <!-- 3D পেমেন্ট সেকশন -->
+        <div class="payment-section">
+            <div class="pay-title">সম্মানিত <span>সদস্যবৃন্দ</span></div>
             
-            <div class="number-box-3d">
-                <span class="the-number" id="cashier-number">01868287538</span>
-                <button class="btn-copy" onclick="copyNumber()">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                    কপি করুন
-                </button>
+            <p class="pay-desc">
+                আমাদের সংগঠনের মাসিক চাঁদা এবং অনুদানের ক্ষেত্রে <span class="pay-desc-green">কোনো নির্দিষ্ট লিমিট নেই।</span><br>
+                যে কেউ তার সামর্থ্য ও ইচ্ছেমতো যেকোনো পরিমাণ অর্থ ডোনেট করতে পারবেন।
+            </p>
+            
+            <div class="pay-warning">
+                চাঁদা বা অনুদান পাঠাতে ক্যাশিয়ারের এই নাম্বারে<br>
+                <span>শুধুমাত্র সেন্ড মানি করুন।</span>
+            </div>
+            
+            <div class="blue-3d-wrapper">
+                <div class="blue-3d-badge">পেমেন্ট নাম্বার</div>
+                <div class="blue-3d-inner">
+                    <div class="blue-3d-number" id="cashier-number">01868287538</div>
+                    <button class="blue-3d-btn" onclick="copyNumber()">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                        কপি করুন
+                    </button>
+                </div>
             </div>
 
+            <!-- নতুন আপডেট করা লোগো -->
             <img class="payment-logos" src="https://i.ibb.co.com/wrbQkQ3j/Picsart-26-09-23-13-33-12-628.png" alt="bKash Nagad Rocket">
         </div>
 
@@ -201,7 +249,7 @@
             </div>
         </div>
 
-        <!-- মাসিক চাঁদার খাতা -->
+        <!-- মাসিক চাঁদার খাতা (উভয় দিকে স্টিকি) -->
         <div class="table-section">
             <div class="table-header">
                 <h3>📖 মাসিক চাঁদার খাতা</h3>
@@ -213,7 +261,7 @@
                     <option value="2030">২০৩০ সাল</option>
                 </select>
             </div>
-            <div class="table-wrapper">
+            <div class="table-wrapper ledger-wrapper">
                 <table class="ledger-table">
                     <thead>
                         <tr>
@@ -296,7 +344,7 @@
 
         window.copyNumber = function() {
             navigator.clipboard.writeText("01868287538").then(() => { 
-                showAlert("ক্যাশিয়ারের নাম্বার কপি করা হয়েছে!"); 
+                showAlert("আলহামদুলিল্লাহ! নাম্বার কপি হয়ে গেছে"); 
             }).catch(err => { 
                 showAlert("কপি করতে সমস্যা হয়েছে!"); 
             });
